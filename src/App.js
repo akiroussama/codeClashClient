@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import TestResults from './TestResults';
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -14,6 +15,7 @@ function App() {
   return (
     <div className="App">
       <h1>File Save Events</h1>
+      <TestResults />
       <ul>
         {events.map((event) => (
           <li key={event.id}>
