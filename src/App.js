@@ -16,7 +16,6 @@ function App() {
   return (
     <div className="App">
       <h1>File Save Events</h1>
-      <TestResults />
       <UserTestResults />
       <ul>
         {events.map((event) => (

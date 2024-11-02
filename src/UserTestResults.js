@@ -5,7 +5,7 @@ function UserTestResults() {
 
   useEffect(() => {
     // Fetch user data from the server
-    fetch('https://codeclashserver.onrender.com/users')
+    fetch('https://codeclashserver.onrender.com/latest-test-results')
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error fetching user data:', error));
