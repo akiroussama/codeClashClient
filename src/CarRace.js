@@ -6,6 +6,7 @@ const CarRace = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    // Fetch data from the REST API
     const fetchData = async () => {
       try {
         const response = await fetch('https://codeclashserver.onrender.com/filtered-test-results');
@@ -16,9 +17,10 @@ const CarRace = () => {
       }
     };
 
-    // Fetch data immediately and then every 15 seconds
     fetchData();
-    const intervalId = setInterval(fetchData, 15000);
+
+    // Optionally, set an interval to fetch data periodically
+    const intervalId = setInterval(fetchData, 5000); // Fetch every 5 seconds
 
     return () => clearInterval(intervalId);
   }, []);
@@ -46,8 +48,20 @@ const CarRace = () => {
     <div className="race-container">
       <h2>Car Race Visualization</h2>
       <div className="race-track">
-        {users.map((user) => {
+        {/* Start Line */}
+        <div className="start-line">
+          <span className="flag">🚩 Start</span>
+        </div>
+        {/* Finish Line */}
+        <div className="finish-line">
+          <span className="flag">🏁 Finish</span>
+        </div>
+        {/* Cars */}
+        {users.map((user, idx) => {
           const progressPercentage = (user.test_status.passed / user.test_status.total) * 100;
+
+          // Determine car image based on user ID or index
+          const carImage = getCarImage(user.id, idx);
 
           return (
             <div key={user.id} className="car-row">
@@ -56,15 +70,14 @@ const CarRace = () => {
                 <span className="project-name">{user.project_info.name}</span>
               </div>
               <div className="track">
-                <div className="finish-line">Finish Line</div>
-                <motion.div
+                <motion.img
+                  src={carImage}
+                  alt={`${user.user} car`}
                   className="car"
-                  style={{ backgroundColor: getRandomColor(user.id) }}
-                  animate={{ left: `${progressPercentage}%` }}
+                  style={{ zIndex: idx + 1 }}
+                  animate={{ x: `${progressPercentage}%` }}
                   transition={{ type: 'spring', stiffness: 50, damping: 20 }}
-                >
-                  🚗
-                </motion.div>
+                />
               </div>
               <div className="progress-info">
                 {user.test_status.passed} / {user.test_status.total} tests passed
@@ -77,19 +90,16 @@ const CarRace = () => {
   );
 };
 
-// Utility function to generate consistent colors based on user ID
-const getRandomColor = (id) => {
-  const colors = [
-    '#e74c3c',
-    '#2ecc71',
-    '#3498db',
-    '#9b59b6',
-    '#f1c40f',
-    '#e67e22',
-    '#1abc9c',
-    '#34495e',
+// Utility function to select car images
+const getCarImage = (id, idx) => {
+  const carImages = [
+    '/car1.png', // Place your car images in the public folder
+    '/car2.png',
+    '/car3.png',
+    '/car4.png',
+    // Add more images as needed
   ];
-  return colors[id % colors.length];
+  return carImages[idx % carImages.length];
 };
 
 export default CarRace;
