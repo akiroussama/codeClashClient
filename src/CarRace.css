@@ -1,111 +1,246 @@
+/* CarRace.css */
+
+/* Race Container */
 .race-container {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
+    /* Gradient Background */
+    background: linear-gradient(-45deg, #1e3c72, #2a5298, #1e3c72, #2a5298);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    color: #fff;
   }
   
+  /* Gradient Animation */
+  @keyframes gradientBG {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  /* Race Track */
   .race-track {
     position: relative;
-    padding: 20px 0;
+    padding: 40px 0; /* Increased padding for better spacing */
   }
   
+  /* Start and Finish Lines */
+  .start-line, .finish-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    z-index: 1;
+    overflow: visible;
+  }
+  
+  .start-line {
+    left: 10px;
+    background: #ff4444;
+  }
+  
+  .finish-line {
+    right: 10px;
+    background: #4CAF50;
+  }
+  
+  /* Flag Container */
+  .flag-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .flag-flag {
+    font-size: 2em;
+    animation: wave 2s infinite;
+  }
+  
+  .flag-text {
+    margin-left: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  /* Waving Animation */
+  @keyframes wave {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+  }
+  
+  /* Floating Text Animation */
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+  }
+  
+  /* Finish Line Glow */
+  .finish-line-glow {
+    position: absolute;
+    top: -20px;
+    bottom: -20px;
+    left: -10px;
+    right: -10px;
+    border: 4px solid rgba(76, 175, 80, 0.5);
+    border-radius: 50%;
+    animation: glow 2s infinite;
+  }
+  
+  @keyframes glow {
+    0% {
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.5),
+                  0 0 20px rgba(76, 175, 80, 0.5),
+                  0 0 30px rgba(76, 175, 80, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.7),
+                  0 0 25px rgba(76, 175, 80, 0.7),
+                  0 0 35px rgba(76, 175, 80, 0.7);
+    }
+    100% {
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.5),
+                  0 0 20px rgba(76, 175, 80, 0.5),
+                  0 0 30px rgba(76, 175, 80, 0.5);
+    }
+  }
+  
+  /* Car Row */
   .car-row {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 40px; /* Increased margin for better spacing */
     gap: 20px;
   }
   
+  /* User Info */
+  .user-info {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+  }
+  
+  .user-name {
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #FFD700;
+  }
+  
+  .project-name {
+    font-size: 0.9em;
+    color: #f0f0f0;
+  }
+  
+  /* Progress Info */
+  .progress-info {
+    width: 150px;
+    text-align: right;
+    color: #fff;
+  }
+  
+  .finished-badge {
+    margin-left: 8px;
+    padding: 4px 8px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 12px;
+    font-size: 0.8em;
+    display: inline-block;
+  }
+  
+  /* Track */
   .track {
     position: relative;
     flex-grow: 1;
     height: 60px;
-    background: #f0f0f0;
+    background: #ccc;
     border-radius: 8px;
-    overflow: visible; /* Changed from hidden to allow shadows to be visible */
-    margin: 0 10px; /* Added margin to account for car overflow */
+    overflow: visible;
+    margin: 0 10px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
   }
   
+  /* Lane Markers */
+  .track::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: linear-gradient(transparent 50%, rgba(255, 255, 255, 0.7) 50%);
+    background-size: 100% 20px;
+    animation: laneMarkerMove 2s linear infinite;
+  }
+  
+  @keyframes laneMarkerMove {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 0 20px;
+    }
+  }
+  
+  /* Car */
   .car {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     width: 50px;
     height: auto;
-    transition: filter 0.3s ease; /* Smooth transition for effects */
+    transition: filter 0.3s ease, transform 0.3s ease;
+    border: 2px solid transparent;
+    border-radius: 8px;
   }
   
   .car.leader {
-    filter: drop-shadow(0 0 8px gold);
-    z-index: 2; /* Ensure leader car is above others */
+    filter: drop-shadow(0 0 12px gold);
+    z-index: 2;
+    border-color: gold;
   }
   
   .car.finished {
-    filter: drop-shadow(0 0 12px #4CAF50);
-    z-index: 1; /* Finished cars above regular ones */
+    filter: drop-shadow(0 0 16px #4CAF50);
+    border-color: #4CAF50;
   }
   
-  .user-info {
-    width: 150px;
-    display: flex;
-    flex-direction: column;
+  /* Hover Effect */
+  .car:hover {
+    transform: translateY(-50%) scale(1.1);
+    border-color: #ff4081;
   }
   
-  .user-name {
-    font-weight: bold;
-    margin-bottom: 4px;
+  /* Start and Finish Line Positioning */
+  .start-line .flag-container {
+    position: absolute;
+    top: -30px;
+    left: -10px;
   }
   
-  .project-name {
-    font-size: 0.9em;
-    color: #666;
+  .finish-line .flag-container {
+    position: absolute;
+    top: -30px;
+    right: -10px;
   }
   
-  .progress-info {
-    width: 150px;
-    text-align: right;
-  }
-  
-  .finished-badge {
-    margin-left: 8px;
-    padding: 2px 6px;
-    background: #4CAF50;
-    color: white;
-    border-radius: 12px;
-    font-size: 0.8em;
-    display: inline-block; /* Ensures proper alignment */
-  }
-  
-  .start-line, .finish-line {
+  /* Confetti Overlay */
+  .confetti-overlay {
     position: absolute;
     top: 0;
-    bottom: 0;
-    width: 2px;
-    z-index: 0; /* Ensure lines stay behind cars */
-  }
-  
-  .start-line {
-    left: 10px; /* Adjusted to account for track margin */
-    background: #ff4444;
-  }
-  
-  .finish-line {
-    right: 10px; /* Adjusted to account for track margin */
-    background: #4CAF50;
-  }
-  
-  .flag {
-    position: absolute;
-    top: -25px;
-    white-space: nowrap;
-    font-size: 0.9em;
-    pointer-events: none; /* Prevent flags from interfering with interactions */
-  }
-  
-  .start-line .flag {
     left: 0;
-  }
-  
-  .finish-line .flag {
-    right: 0;
   }

@@ -1,11 +1,17 @@
+// CarRace.js
 import React, { useEffect, useState, useRef } from 'react';
 import './CarRace.css';
 import { motion } from 'framer-motion';
+import Confetti from 'react-confetti';
+import { useWindowSize } from 'react-use';
+
 
 const CarRace = () => {
-    const [users, setUsers] = useState([]);
-    const trackRefs = useRef([]); // To handle multiple tracks if needed
-    const [trackWidths, setTrackWidths] = useState([]);
+  const [users, setUsers] = useState([]);
+  const trackRefs = useRef([]);
+  const [trackWidths, setTrackWidths] = useState([]);
+  const [finishedCars, setFinishedCars] = useState([]);
+  const { width, height } = useWindowSize();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,6 +19,13 @@ const CarRace = () => {
         const response = await fetch('https://codeclashserver.onrender.com/filtered-test-results');
         const data = await response.json();
         setUsers(data);
+
+        // Identify finished cars
+        const newlyFinished = data.filter(user => 
+          user.test_status.passed >= user.test_status.total && 
+          !finishedCars.includes(user.id)
+        ).map(user => user.id);
+        setFinishedCars(prev => [...prev, ...newlyFinished]);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -21,7 +34,8 @@ const CarRace = () => {
     fetchData();
     const intervalId = setInterval(fetchData, 5000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [finishedCars]);
+
   useEffect(() => {
     const updateTrackWidths = () => {
       if (trackRefs.current.length > 0) {
@@ -30,9 +44,20 @@ const CarRace = () => {
       }
     };
 
+    const debounce = (func, delay) => {
+      let debounceTimer;
+      return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+      };
+    };
+
+    const debouncedUpdate = debounce(updateTrackWidths, 100);
     updateTrackWidths();
-    window.addEventListener('resize', updateTrackWidths);
-    return () => window.removeEventListener('resize', updateTrackWidths);
+    window.addEventListener('resize', debouncedUpdate);
+    return () => window.removeEventListener('resize', debouncedUpdate);
   }, [users]);
 
   const leader = users.reduce((prev, current) => {
@@ -41,15 +66,22 @@ const CarRace = () => {
 
   return (
     <div className="race-container">
-      <h2>Car Race Visualization</h2>
+      <h2>🏎️ Car Race Visualization 🏁</h2>
       <div className="race-track">
         {/* Start Line */}
         <div className="start-line">
-          <span className="flag">🚩 Start</span>
+          <div className="flag-container">
+            <div className="flag-flag">🚩</div>
+            <div className="flag-text">Start</div>
+          </div>
         </div>
         {/* Finish Line */}
         <div className="finish-line">
-          <span className="flag">🏁 Finish</span>
+          <div className="finish-line-glow"></div>
+          <div className="flag-container">
+            <div className="flag-flag">🏁</div>
+            <div className="flag-text">Finish</div>
+          </div>
         </div>
 
         {users.map((user, idx) => {
@@ -76,7 +108,7 @@ const CarRace = () => {
                   }`}
                   style={{ 
                     zIndex: idx + 1,
-                    left: 0, // Initial position remains 0
+                    left: 0,
                   }}
                   animate={{
                     x: xPos,
@@ -87,6 +119,17 @@ const CarRace = () => {
                     scale: { duration: 0.3 }
                   }}
                 />
+                {/* Trigger Confetti */}
+                {isFinished && (
+                  <Confetti 
+                    width={width} 
+                    height={height} 
+                    numberOfPieces={200} 
+                    recycle={false} 
+                    gravity={0.3}
+                    colors={['#FFC107', '#FF5722', '#4CAF50', '#2196F3', '#9C27B0']}
+                  />
+                )}
               </div>
 
               <div className="progress-info">
