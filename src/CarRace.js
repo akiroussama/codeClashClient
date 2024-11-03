@@ -33,6 +33,9 @@ const CarRace = () => {
     return prev.test_status.passed > current.test_status.passed ? prev : current;
   }, users[0]);
 
+  // Calculate finish line position (slightly before the actual end to account for car width)
+  const FINISH_LINE_POSITION = 98; // 98% of the track width
+
   return (
     <div className="race-container">
       <h2>Car Race Visualization</h2>
@@ -47,7 +50,11 @@ const CarRace = () => {
         </div>
         {/* Cars */}
         {users.map((user, idx) => {
-          const progressPercentage = (user.test_status.passed / user.test_status.total) * 100;
+          const isFinished = user.test_status.passed >= user.test_status.total;
+          // Calculate progress percentage with finish line consideration
+          const progressPercentage = isFinished 
+            ? FINISH_LINE_POSITION 
+            : (user.test_status.passed / user.test_status.total) * FINISH_LINE_POSITION;
 
           // Determine car image based on user ID or index
           const carImage = getCarImage(user.id, idx);
@@ -62,15 +69,21 @@ const CarRace = () => {
                 <motion.img
                   src={carImage}
                   alt={`${user.user} car`}
-                  className={`car ${user.id === leader.id ? 'leader' : ''}`}
+                  className={`car ${user.id === leader.id ? 'leader' : ''} ${isFinished ? 'finished' : ''}`}
                   style={{ zIndex: idx + 1 }}
-                  animate={{ x: `calc(${progressPercentage}% - 25px)` }} // Adjust for car width
-                  transition={{ type: 'spring', stiffness: 50, damping: 20 }}
+                  animate={{
+                    x: `${progressPercentage}%`,
+                    scale: isFinished ? 1.1 : 1, // Slight scale up when finished
+                  }}
+                  transition={{
+                    x: { type: 'spring', stiffness: 50, damping: 20 },
+                    scale: { duration: 0.3 }
+                  }}
                 />
               </div>
               <div className="progress-info">
                 {user.test_status.passed} / {user.test_status.total} tests passed
-                {user.test_status.passed >= user.test_status.total && (
+                {isFinished && (
                   <span className="finished-badge">🎉 Finished</span>
                 )}
               </div>
@@ -82,14 +95,12 @@ const CarRace = () => {
   );
 };
 
-// Utility function to select car images
 const getCarImage = (id, idx) => {
   const carImages = [
-    '/car1.png', // Place your car images in the public folder
+    '/car1.png',
     '/car2.png',
     '/car3.png',
     '/car4.png',
-    // Add more images as needed
   ];
   return carImages[idx % carImages.length];
 };

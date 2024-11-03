@@ -1,144 +1,104 @@
-/* src/components/CarRace.css */
-
 .race-container {
     padding: 20px;
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    min-height: 100vh;
-  }
-  
-  .race-container h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #333;
+    max-width: 1200px;
+    margin: 0 auto;
   }
   
   .race-track {
     position: relative;
-    width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .start-line,
-  .finish-line {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background-color: #555;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .start-line {
-    left: 0;
-  }
-  
-  .finish-line {
-    right: 0;
-  }
-  
-  .flag {
-    background-color: #e74c3c;
-    color: #fff;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.9em;
+    padding: 20px 0;
   }
   
   .car-row {
     display: flex;
-    flex-direction: column;
-    margin: 40px 0; /* Add spacing to accommodate start and finish lines */
-  }
-  
-  .user-info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  
-  .user-name {
-    font-weight: bold;
-    font-size: 1.1em;
-    color: #2c3e50;
-  }
-  
-  .project-name {
-    font-style: italic;
-    color: #7f8c8d;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
   }
   
   .track {
     position: relative;
-    width: 100%;
+    flex-grow: 1;
     height: 60px;
-    background-color: #ecf0f1;
-    border-radius: 30px;
+    background: #f0f0f0;
+    border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 10px;
   }
   
   .car {
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
     width: 50px;
     height: auto;
-    z-index: 2;
   }
   
   .car.leader {
-    box-shadow: 0 0 10px 5px #f1c40f;
-    transform: translate(-50%, -50%) scale(1.1);
+    filter: drop-shadow(0 0 8px gold);
+  }
+  
+  .car.finished {
+    filter: drop-shadow(0 0 12px #4CAF50);
+  }
+  
+  .user-info {
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .user-name {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .project-name {
+    font-size: 0.9em;
+    color: #666;
   }
   
   .progress-info {
+    width: 150px;
     text-align: right;
-    font-size: 0.9em;
-    color: #34495e;
   }
   
   .finished-badge {
-    margin-left: 10px;
-    color: #27ae60;
-    font-weight: bold;
+    margin-left: 8px;
+    padding: 2px 6px;
+    background: #4CAF50;
+    color: white;
+    border-radius: 12px;
+    font-size: 0.8em;
   }
   
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .race-track {
-      padding: 10px;
-    }
+  .start-line, .finish-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+  }
   
-    .start-line,
-    .finish-line {
-      width: 2px;
-    }
+  .start-line {
+    left: 0;
+    background: #ff4444;
+  }
   
-    .flag {
-      font-size: 0.8em;
-      padding: 1px 4px;
-    }
+  .finish-line {
+    right: 0;
+    background: #4CAF50;
+  }
   
-    .car {
-      width: 40px;
-    }
+  .flag {
+    position: absolute;
+    top: -25px;
+    white-space: nowrap;
+    font-size: 0.9em;
+  }
   
-    .user-info {
-      flex-direction: column;
-      align-items: flex-start;
-    }
+  .start-line .flag {
+    left: 0;
+  }
   
-    .progress-info {
-      text-align: left;
-    }
+  .finish-line .flag {
+    right: 0;
   }
