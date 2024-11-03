@@ -111,15 +111,10 @@ const Progress = styled.div`
 
 const TestRaceTrack = ({ apiEndpoint, refreshInterval = 5000 }) => {
   const [raceData, setRaceData] = useState([]);
-  const [previousData, setPreviousData] = useState({});
 
   const fetchData = async () => {
     try {
       const response = await axios.get(apiEndpoint);
-      setPreviousData(raceData.reduce((acc, item) => ({
-        ...acc,
-        [item.id]: item.test_status.passed
-      }), {}));
       setRaceData(response.data);
     } catch (error) {
       console.error('Error fetching race data:', error);
@@ -136,8 +131,8 @@ const TestRaceTrack = ({ apiEndpoint, refreshInterval = 5000 }) => {
     return (passed / total) * 90; // 90% to leave space for finish line
   };
 
-  const isMoving = (id, passed) => {
-    return previousData[id] !== undefined && previousData[id] < passed;
+  const isMoving = (passed) => {
+    return passed > 0; // Show flame animation if there are any passed tests
   };
 
   const getCarColor = (index) => {
@@ -161,7 +156,7 @@ const TestRaceTrack = ({ apiEndpoint, refreshInterval = 5000 }) => {
               item.test_status.totalTests
             )}
             color={getCarColor(index)}
-            isMoving={isMoving(item.id, item.test_status.passed)}
+            isMoving={isMoving(item.test_status.passed)}
           />
           <FinishLine />
         </Track>
