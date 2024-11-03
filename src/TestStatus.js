@@ -9,7 +9,7 @@ const TestStatus = () => {
   useEffect(() => {
     const fetchTestStatuses = async () => {
       try {
-        const response = await axios.get('/test-status');
+        const response = await axios.get('https://codeclashserver.onrender.com/test-status');
         setTestStatuses(response.data);
         setLoading(false);
       } catch (err) {
