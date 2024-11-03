@@ -9,7 +9,7 @@ const TestStatus = () => {
   useEffect(() => {
     const fetchTestStatuses = async () => {
       try {
-        const response = await axios.get('https://codeclashserver.onrender.com/test-status');
+        const response = await axios.get('https://codeclashserver.onrender.com/latest-test-results-by-user');
         setTestStatuses(response.data);
         setLoading(false);
       } catch (err) {
@@ -26,10 +26,11 @@ const TestStatus = () => {
 
   return (
     <div className="test-status-container">
-      <h2>Test Status Updates</h2>
+      <h2>Latest Test Status By User</h2>
       {testStatuses.map((status, index) => (
         <div key={index} className="status-card">
-          <h3>Test Run at {new Date(status.timestamp).toLocaleString()}</h3>
+          <h3>User: {status.user}</h3>
+          <p>Last Update: {new Date(status.timestamp).toLocaleString()}</p>
           
           <div className="status-section">
             <h4>Test Status</h4>
