@@ -1,5 +1,5 @@
 import React from 'react';
-import UserTestResults from './UserTestResults';
+import TestStatus from './TestStatus';
 
 function App() {
  
