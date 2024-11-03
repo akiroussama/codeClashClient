@@ -7,7 +7,7 @@ function UserTestResults() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:3000/latest-test-results')
+    fetch('https://codeclashclient.onrender.com/latest-test-results')
       .then(response => response.json())
       .then(data => {
         const formattedData = data.map(user => {
