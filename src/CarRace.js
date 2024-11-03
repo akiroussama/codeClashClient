@@ -69,21 +69,22 @@ const CarRace = () => {
       <div className="title-section">
         <h2>Car Race Visualization <span className="checkered-flag">🏁</span></h2>
       </div>
-      <div className="flags-section">
+    </div>
+
+      <div className="race-track">
+        <div className="start-line">
         <div className="start-flag">
           <span className="flag-icon">🚩</span>
           <span className="flag-text">Start</span>
         </div>
+
+        </div>
+        <div className="finish-line">
         <div className="finish-flag">
           <span className="flag-icon">🏁</span>
           <span className="flag-text">Finish</span>
         </div>
-      </div>
-    </div>
-
-      <div className="race-track">
-        <div className="start-line"></div>
-        <div className="finish-line"></div>
+        </div>
 
         {users.map((user, idx) => {
           const isFinished = user.test_status.passed >= user.test_status.total;
