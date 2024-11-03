@@ -6,6 +6,7 @@
     background: #1e3c72;
     border-radius: 16px;
     color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
   
   .race-header {
@@ -16,10 +17,11 @@
   }
   
   .race-header h2 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    color: #FFD700;
   }
   
   .flag-indicators {
@@ -57,6 +59,8 @@
     position: relative;
     padding: 0 60px;
     margin-top: 3rem;
+    border-top: 2px dashed #FFD700;
+    border-bottom: 2px dashed #FFD700;
   }
   
   .start-line,
@@ -85,6 +89,11 @@
     gap: 2rem;
     margin-bottom: 2rem;
     align-items: center;
+    transition: background 0.3s ease;
+  }
+  
+  .car-row:hover {
+    background: rgba(255, 255, 255, 0.1);
   }
   
   .player-info {
@@ -96,6 +105,11 @@
     font-weight: bold;
     color: #FFD700;
     margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+  }
+  
+  .player-name:hover {
+    color: #FF5722;
   }
   
   .project-name {
@@ -122,11 +136,12 @@
     transform: translateY(-50%);
     width: 50px;
     height: auto;
-    transition: filter 0.3s ease;
+    transition: filter 0.3s ease, transform 0.3s ease;
   }
   
   .car.leader {
     filter: drop-shadow(0 0 12px gold);
+    transform: translateY(-50%) scale(1.1);
   }
   
   .car.finished {
@@ -152,6 +167,7 @@
     border-radius: 20px;
     font-size: 0.9rem;
     animation: pulse 2s infinite;
+    color: white;
   }
   
   @keyframes pulse {

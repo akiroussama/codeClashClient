@@ -4,7 +4,6 @@ import CarRace from './CarRace';
 function App() {
   return (
     <div className="App">
-      <h1>Test Results</h1>
          <CarRace />
     </div>
   );
