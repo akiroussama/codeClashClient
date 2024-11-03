@@ -44,8 +44,8 @@ const Car = styled.div`
   left: ${props => props.progress}%;
   top: 50%;
   transform: translateY(-50%) rotate(90deg);
-  transition: left 0.5s ease-out;
-  
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); // Smoother transition
+
   &::before {
     content: '';
     position: absolute;
@@ -53,8 +53,9 @@ const Car = styled.div`
     height: 100%;
     background-color: ${props => props.color};
     clip-path: polygon(0 20%, 50% 0, 100% 20%, 100% 80%, 50% 100%, 0 80%);
+    box-shadow: 0 0 10px ${props => props.color}; // Add glow effect
   }
-  
+
   ${props => props.isMoving && `
     &::after {
       content: '';
@@ -64,12 +65,9 @@ const Car = styled.div`
       transform: translateX(-50%);
       width: 20px;
       height: 30px;
-      background: linear-gradient(to bottom, 
-        #ff6b6b,
-        #ffd93d,
-        transparent
-      );
+      background: radial-gradient(circle, #ff6b6b, #ffd93d, transparent);
       animation: flame 0.2s infinite alternate;
+      opacity: 0.8; // Make flame more visible
     }
   `}
 `;
@@ -108,6 +106,12 @@ const Progress = styled.div`
   transform: translateY(-50%);
   z-index: 1;
 `;
+const GlobalStyle = createGlobalStyle`
+  @keyframes flame {
+    0% { transform: scale(1) translateX(-50%); }
+    100% { transform: scale(1.2) translateX(-50%); }
+  }
+`;
 
 const TestRaceTrack = ({ apiEndpoint, refreshInterval = 5000 }) => {
   const [raceData, setRaceData] = useState([]);
@@ -121,6 +125,18 @@ const TestRaceTrack = ({ apiEndpoint, refreshInterval = 5000 }) => {
     }
   };
 
+//   useEffect(() => {
+//     // Play background music
+//     const bgMusic = new Audio('/path/to/background-music.mp3');
+//     bgMusic.loop = true;
+//     bgMusic.play();
+
+//     return () => {
+//       bgMusic.pause();
+//       bgMusic.currentTime = 0;
+//     };
+//   }, []);
+
   useEffect(() => {
     fetchData();
     const interval = setInterval(fetchData, refreshInterval);
@@ -128,7 +144,8 @@ const TestRaceTrack = ({ apiEndpoint, refreshInterval = 5000 }) => {
   }, [apiEndpoint, refreshInterval]);
 
   const calculateProgress = (passed, total) => {
-    return (passed / total) * 90; // 90% to leave space for finish line
+    if (total === 0) return 0;
+    return (passed / total) * 100;
   };
 
   const isMoving = (passed) => {
