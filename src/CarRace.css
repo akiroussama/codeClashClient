@@ -22,7 +22,8 @@
     height: 60px;
     background: #f0f0f0;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to allow shadows to be visible */
+    margin: 0 10px; /* Added margin to account for car overflow */
   }
   
   .car {
@@ -31,14 +32,17 @@
     transform: translateY(-50%);
     width: 50px;
     height: auto;
+    transition: filter 0.3s ease; /* Smooth transition for effects */
   }
   
   .car.leader {
     filter: drop-shadow(0 0 8px gold);
+    z-index: 2; /* Ensure leader car is above others */
   }
   
   .car.finished {
     filter: drop-shadow(0 0 12px #4CAF50);
+    z-index: 1; /* Finished cars above regular ones */
   }
   
   .user-info {
@@ -69,6 +73,7 @@
     color: white;
     border-radius: 12px;
     font-size: 0.8em;
+    display: inline-block; /* Ensures proper alignment */
   }
   
   .start-line, .finish-line {
@@ -76,15 +81,16 @@
     top: 0;
     bottom: 0;
     width: 2px;
+    z-index: 0; /* Ensure lines stay behind cars */
   }
   
   .start-line {
-    left: 0;
+    left: 10px; /* Adjusted to account for track margin */
     background: #ff4444;
   }
   
   .finish-line {
-    right: 0;
+    right: 10px; /* Adjusted to account for track margin */
     background: #4CAF50;
   }
   
@@ -93,6 +99,7 @@
     top: -25px;
     white-space: nowrap;
     font-size: 0.9em;
+    pointer-events: none; /* Prevent flags from interfering with interactions */
   }
   
   .start-line .flag {
