@@ -1,3 +1,4 @@
+@ -0,0 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -6,7 +7,7 @@ function TestResults() {
 
   useEffect(() => {
     // Fetch test results from the backend
-    axios.get('https://codeclashclient.onrender.com/test-results')
+    axios.get('https://codeclashserver.onrender.com/test-results')
       .then(response => {
         setResults(response.data);
       })
