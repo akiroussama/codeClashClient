@@ -1,11 +1,14 @@
 import React from 'react';
-import TestStatus from './TestStatus';
+import TestRaceTrack from './TestRaceTrack';
 
 function App() {
   return (
     <div className="App">
       <h1>Test Results</h1>
-      <TestStatus />
+      <TestRaceTrack 
+        apiEndpoint="https://codeclashserver.onrender.com/filtered-test-results"
+        refreshInterval={5000}
+        />
     </div>
   );
 }
