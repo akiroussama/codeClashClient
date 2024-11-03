@@ -6,7 +6,7 @@ function TestResults() {
 
   useEffect(() => {
     // Fetch test results from the backend
-    axios.get('https://codeclashserver.onrender.com/test-results')
+    axios.get('http://localhost:3000/test-results')
       .then(response => {
         setResults(response.data);
       })

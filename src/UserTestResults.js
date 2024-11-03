@@ -7,10 +7,22 @@ function UserTestResults() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('https://codeclashserver.onrender.com/latest-test-results')
+    fetch('http://localhost:3000/latest-test-results')
       .then(response => response.json())
       .then(data => {
-        setUsers(data);
+        const formattedData = data.map(user => {
+          const testStatus = JSON.parse(user.testStatus);
+          return {
+            username: user.user,
+            date: new Date(parseInt(user.timestamp)).toLocaleString(),
+            passed: testStatus.passed,
+            failed: testStatus.errors,
+            environment: 'N/A', // Placeholder if not available
+            vscodeVersion: 'N/A', // Placeholder if not available
+            platform: 'N/A' // Placeholder if not available
+          };
+        });
+        setUsers(formattedData);
         setLoading(false);
       })
       .catch(error => {
