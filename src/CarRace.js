@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './CarRace.css';
 import { motion } from 'framer-motion';
 
 const CarRace = () => {
-  const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState([]);
+    const trackRefs = useRef([]); // To handle multiple tracks if needed
+    const [trackWidths, setTrackWidths] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,6 +22,18 @@ const CarRace = () => {
     const intervalId = setInterval(fetchData, 5000);
     return () => clearInterval(intervalId);
   }, []);
+  useEffect(() => {
+    const updateTrackWidths = () => {
+      if (trackRefs.current.length > 0) {
+        const widths = trackRefs.current.map(track => track.offsetWidth);
+        setTrackWidths(widths);
+      }
+    };
+
+    updateTrackWidths();
+    window.addEventListener('resize', updateTrackWidths);
+    return () => window.removeEventListener('resize', updateTrackWidths);
+  }, [users]);
 
   const leader = users.reduce((prev, current) => {
     return prev?.test_status.passed > current?.test_status.passed ? prev : current;
@@ -40,12 +54,11 @@ const CarRace = () => {
 
         {users.map((user, idx) => {
           const isFinished = user.test_status.passed >= user.test_status.total;
-          // Calculate progress with car width consideration
           const progress = user.test_status.passed / user.test_status.total;
-          // Adjust final position to account for car width and track padding
-          const progressPercentage = isFinished 
-            ? 'calc(100% - 60px)' // 50px car width + 10px buffer
-            : `calc(${progress * 100}% - 60px)`;
+          const trackWidth = trackWidths[idx] || 0; // Fallback to 0 if not measured yet
+          const maxX = trackWidth - 60; // 50px car width + 10px buffer
+
+          const xPos = isFinished ? maxX : progress * maxX;
 
           return (
             <div key={user.id} className="car-row">
@@ -53,8 +66,8 @@ const CarRace = () => {
                 <span className="user-name">{user.user}</span>
                 <span className="project-name">{user.project_info.name}</span>
               </div>
-              
-              <div className="track">
+
+              <div className="track" ref={el => trackRefs.current[idx] = el}>
                 <motion.img
                   src={getCarImage(user.id, idx)}
                   alt={`${user.user} car`}
@@ -63,10 +76,10 @@ const CarRace = () => {
                   }`}
                   style={{ 
                     zIndex: idx + 1,
-                    left: 0, // Set initial position
+                    left: 0, // Initial position remains 0
                   }}
                   animate={{
-                    x: progressPercentage,
+                    x: xPos,
                     scale: isFinished ? 1.1 : 1,
                   }}
                   transition={{
