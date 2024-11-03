@@ -148,7 +148,7 @@ const TestRaceTrack = ({ apiEndpoint, refreshInterval = 5000 }) => {
     return (passed / total) * 100;
   };
 
-  const isMoving = (passed) => {
+  const isMoving = (pasCarRace.jssed) => {
     return passed > 0; // Show flame animation if there are any passed tests
   };
 
