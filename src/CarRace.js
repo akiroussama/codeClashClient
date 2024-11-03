@@ -29,7 +29,7 @@ const CarRace = () => {
   }, []);
 
   // Calculate maximum totalTests to set the track length
-  const maxTotalTests = Math.max(...users.map((user) => user.test_status.totalTests), 100);
+  const maxTotalTests = Math.max(...users.map((user) => user.test_status.total), 100);
 
   // Determine the leader
   const leader = users.reduce((prev, current) => {
@@ -50,7 +50,7 @@ const CarRace = () => {
         </div>
         {/* Cars */}
         {users.map((user, idx) => {
-          const progressPercentage = (user.test_status.passed / user.test_status.totalTests) * 100;
+          const progressPercentage = (user.test_status.passed / user.test_status.total) * 100;
 
           // Determine car image based on user ID or index
           const carImage = getCarImage(user.id, idx);
@@ -72,8 +72,8 @@ const CarRace = () => {
                 />
               </div>
               <div className="progress-info">
-                {user.test_status.passed} / {user.test_status.totalTests} tests passed
-                {user.test_status.passed >= user.test_status.totalTests && (
+                {user.test_status.passed} / {user.test_status.total} tests passed
+                {user.test_status.passed >= user.test_status.total && (
                   <span className="finished-badge">🎉 Finished</span>
                 )}
               </div>
