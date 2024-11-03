@@ -1,3 +1,5 @@
+// src/components/CarRace.js
+
 import React, { useEffect, useState } from 'react';
 import './CarRace.css';
 import { motion } from 'framer-motion';
@@ -6,43 +8,33 @@ const CarRace = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    // Fetch data from the REST API
     const fetchData = async () => {
       try {
         const response = await fetch('https://codeclashserver.onrender.com/filtered-test-results');
         const data = await response.json();
-        handleIncomingData(data);
+        setUsers(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
+    // Fetch data initially
     fetchData();
 
-    // Optionally, set an interval to fetch data periodically
-    const intervalId = setInterval(fetchData, 5000); // Fetch every 5 seconds
+    // Set up interval to fetch data every 5 seconds
+    const intervalId = setInterval(fetchData, 5000);
 
+    // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
-  const handleIncomingData = (data) => {
-    // Assuming data is an array of user test results
-    setUsers((prevUsers) => {
-      const updatedUsers = [...prevUsers];
-      data.forEach((userData) => {
-        const index = updatedUsers.findIndex((user) => user.id === userData.id);
-        if (index !== -1) {
-          updatedUsers[index] = userData;
-        } else {
-          updatedUsers.push(userData);
-        }
-      });
-      return updatedUsers;
-    });
-  };
-
   // Calculate maximum totalTests to set the track length
-  const maxTotalTests = Math.max(...users.map((user) => user.test_status.total), 100);
+  const maxTotalTests = Math.max(...users.map((user) => user.test_status.totalTests), 100);
+
+  // Determine the leader
+  const leader = users.reduce((prev, current) => {
+    return prev.test_status.passed > current.test_status.passed ? prev : current;
+  }, users[0]);
 
   return (
     <div className="race-container">
@@ -58,7 +50,7 @@ const CarRace = () => {
         </div>
         {/* Cars */}
         {users.map((user, idx) => {
-          const progressPercentage = (user.test_status.passed / user.test_status.total) * 100;
+          const progressPercentage = (user.test_status.passed / user.test_status.totalTests) * 100;
 
           // Determine car image based on user ID or index
           const carImage = getCarImage(user.id, idx);
@@ -73,14 +65,17 @@ const CarRace = () => {
                 <motion.img
                   src={carImage}
                   alt={`${user.user} car`}
-                  className="car"
+                  className={`car ${user.id === leader.id ? 'leader' : ''}`}
                   style={{ zIndex: idx + 1 }}
                   animate={{ x: `${progressPercentage}%` }}
                   transition={{ type: 'spring', stiffness: 50, damping: 20 }}
                 />
               </div>
               <div className="progress-info">
-                {user.test_status.passed} / {user.test_status.total} tests passed
+                {user.test_status.passed} / {user.test_status.totalTests} tests passed
+                {user.test_status.passed >= user.test_status.totalTests && (
+                  <span className="finished-badge">🎉 Finished</span>
+                )}
               </div>
             </div>
           );

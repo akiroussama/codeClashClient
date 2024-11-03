@@ -86,10 +86,6 @@
     margin-bottom: 10px;
   }
   
-  .finish-line {
-    right: 0;
-  }
-  
   .car {
     position: absolute;
     top: 50%;
@@ -99,10 +95,21 @@
     z-index: 2;
   }
   
+  .car.leader {
+    box-shadow: 0 0 10px 5px #f1c40f;
+    transform: translate(-50%, -60%) scale(1.1); /* Slightly larger and elevated */
+  }
+  
   .progress-info {
     text-align: right;
     font-size: 0.9em;
     color: #34495e;
+  }
+  
+  .finished-badge {
+    margin-left: 10px;
+    color: #27ae60;
+    font-weight: bold;
   }
   
   /* Responsive Design */
