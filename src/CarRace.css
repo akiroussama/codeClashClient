@@ -6,6 +6,7 @@
     background: #1e3c72;
     border-radius: 16px;
     color: white;
+    position: relative;
   }
   
   .race-header {
@@ -22,23 +23,45 @@
     gap: 0.5rem;
   }
   
-  .flag-indicators {
+.flags-section {
     display: flex;
-    gap: 2rem;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 60px; /* Match the padding of your race track */
   }
   
-  .start-indicator,
-  .finish-indicator {
+  .start-flag, .finish-flag {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    position: absolute;
+    top: 0;
+  }
+  
+  .start-flag {
+    left: 0;
+    color: white;
+  }
+  
+  .finish-flag {
+    right: 0;
+    color: white;
+  }
+  
+  .flag-icon {
+    font-size: 1.2rem;
+  }
+  
+  .flag-text {
+    font-size: 1rem;
     font-weight: 500;
   }
   
+  /* Update track container styles */
   .race-track {
     position: relative;
     padding: 0 60px;
-    margin-top: 3rem;
+    margin-top: 1rem;
   }
   
   .start-line,
@@ -51,22 +74,31 @@
   }
   
   .start-line {
-    left: 0;
+    left: 60px; /* Match the padding */
     background: #ff4444;
   }
   
   .finish-line {
-    right: 0;
+    right: 60px; /* Match the padding */
     background: #4CAF50;
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
   }
   
+  
+  /* Ensure track alignment */
+.track-container {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  /* Update car row styles */
   .car-row {
     display: grid;
     grid-template-columns: 200px 1fr 200px;
     gap: 2rem;
     margin-bottom: 2rem;
     align-items: center;
+    position: relative;
   }
   
   .player-info {
@@ -170,5 +202,28 @@
   
     .car-row {
       grid-template-columns: 120px 1fr 120px;
+    }
+  }
+  
+  /* Responsive adjustments */
+@media (max-width: 768px) {
+    .race-container {
+      padding: 1rem;
+    }
+    
+    .flags-section {
+      padding: 0 30px;
+    }
+    
+    .start-line {
+      left: 30px;
+    }
+    
+    .finish-line {
+      right: 30px;
+    }
+    
+    .race-track {
+      padding: 0 30px;
     }
   }

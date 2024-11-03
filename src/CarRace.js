@@ -66,19 +66,20 @@ const CarRace = () => {
   return (
     <div className="race-container">
       <div className="race-header">
-        <h2>Car Race Visualization <span className="checkered-flag">🏁</span></h2>
-        <div className="flag-indicators">
-          <div className="start-indicator">
-            <span className="red-flag">🚩</span>
-            Start
+        <div className="title-section">
+          <h2>Car Race Visualization <span className="checkered-flag">🏁</span></h2>
+        </div>
+        <div className="flags-section">
+          <div className="start-flag">
+            <span className="flag-icon">🚩</span>
+            <span className="flag-text">Start</span>
           </div>
-          <div className="finish-indicator">
-            <span className="checkered-flag">🏁</span>
-            Finish
+          <div className="finish-flag">
+            <span className="flag-icon">🏁</span>
+            <span className="flag-text">Finish</span>
           </div>
         </div>
       </div>
-
       <div className="race-track">
         <div className="start-line"></div>
         <div className="finish-line"></div>
