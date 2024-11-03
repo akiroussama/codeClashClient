@@ -28,9 +28,6 @@ const CarRace = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // Calculate maximum totalTests to set the track length
-  const maxTotalTests = Math.max(...users.map((user) => user.test_status.total), 100);
-
   // Determine the leader
   const leader = users.reduce((prev, current) => {
     return prev.test_status.passed > current.test_status.passed ? prev : current;
@@ -67,7 +64,7 @@ const CarRace = () => {
                   alt={`${user.user} car`}
                   className={`car ${user.id === leader.id ? 'leader' : ''}`}
                   style={{ zIndex: idx + 1 }}
-                  animate={{ x: `${progressPercentage}%` }}
+                  animate={{ x: `calc(${progressPercentage}% - 25px)` }} // Adjust for car width
                   transition={{ type: 'spring', stiffness: 50, damping: 20 }}
                 />
               </div>
