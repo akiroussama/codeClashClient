@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 
-
 const CarRace = () => {
   const [users, setUsers] = useState([]);
   const trackRefs = useRef([]);
@@ -66,74 +65,73 @@ const CarRace = () => {
 
   return (
     <div className="race-container">
-      <h2>🏎️ Car Race Visualization 🏁</h2>
+      <div className="race-header">
+        <h2>Car Race Visualization <span className="checkered-flag">🏁</span></h2>
+        <div className="flag-indicators">
+          <div className="start-indicator">
+            <span className="red-flag">🚩</span>
+            Start
+          </div>
+          <div className="finish-indicator">
+            <span className="checkered-flag">🏁</span>
+            Finish
+          </div>
+        </div>
+      </div>
+
       <div className="race-track">
-        {/* Start Line */}
-        <div className="start-line">
-          <div className="flag-container">
-            <div className="flag-flag">🚩</div>
-            <div className="flag-text">Start</div>
-          </div>
-        </div>
-        {/* Finish Line */}
-        <div className="finish-line">
-          <div className="finish-line-glow"></div>
-          <div className="flag-container">
-            <div className="flag-flag">🏁</div>
-            <div className="flag-text">Finish</div>
-          </div>
-        </div>
+        <div className="start-line"></div>
+        <div className="finish-line"></div>
 
         {users.map((user, idx) => {
           const isFinished = user.test_status.passed >= user.test_status.total;
           const progress = user.test_status.passed / user.test_status.total;
-          const trackWidth = trackWidths[idx] || 0; // Fallback to 0 if not measured yet
-          const maxX = trackWidth - 60; // 50px car width + 10px buffer
-
+          const trackWidth = trackWidths[idx] || 0;
+          const maxX = trackWidth - 60;
           const xPos = isFinished ? maxX : progress * maxX;
 
           return (
             <div key={user.id} className="car-row">
-              <div className="user-info">
-                <span className="user-name">{user.user}</span>
-                <span className="project-name">{user.project_info.name}</span>
+              <div className="player-info">
+                <div className="player-name">{user.user}</div>
+                <div className="project-name">{user.project_info.name}</div>
               </div>
 
-              <div className="track" ref={el => trackRefs.current[idx] = el}>
-                <motion.img
-                  src={getCarImage(user.id, idx)}
-                  alt={`${user.user} car`}
-                  className={`car ${user.id === leader?.id ? 'leader' : ''} ${
-                    isFinished ? 'finished' : ''
-                  }`}
-                  style={{ 
-                    zIndex: idx + 1,
-                    left: 0,
-                  }}
-                  animate={{
-                    x: xPos,
-                    scale: isFinished ? 1.1 : 1,
-                  }}
-                  transition={{
-                    x: { type: 'spring', stiffness: 50, damping: 20 },
-                    scale: { duration: 0.3 }
-                  }}
-                />
-                {/* Trigger Confetti */}
-                {isFinished && (
-                  <Confetti 
-                    width={width} 
-                    height={height} 
-                    numberOfPieces={200} 
-                    recycle={false} 
-                    gravity={0.3}
-                    colors={['#FFC107', '#FF5722', '#4CAF50', '#2196F3', '#9C27B0']}
+              <div className="track-container">
+                <div className="track" ref={el => trackRefs.current[idx] = el}>
+                  <motion.img
+                    src={getCarImage(user.id, idx)}
+                    alt={`${user.user} car`}
+                    className={`car ${user.id === leader?.id ? 'leader' : ''} ${
+                      isFinished ? 'finished' : ''
+                    }`}
+                    style={{ zIndex: idx + 1 }}
+                    animate={{
+                      x: xPos,
+                      scale: isFinished ? 1.1 : 1,
+                    }}
+                    transition={{
+                      x: { type: 'spring', stiffness: 50, damping: 20 },
+                      scale: { duration: 0.3 }
+                    }}
                   />
-                )}
+                  {isFinished && (
+                    <Confetti 
+                      width={width} 
+                      height={height} 
+                      numberOfPieces={200} 
+                      recycle={false} 
+                      gravity={0.3}
+                      colors={['#FFC107', '#FF5722', '#4CAF50', '#2196F3', '#9C27B0']}
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="progress-info">
-                {user.test_status.passed} / {user.test_status.total} tests passed
+                <span className="test-count">
+                  {user.test_status.passed} / {user.test_status.total} tests passed
+                </span>
                 {isFinished && (
                   <span className="finished-badge">🎉 Finished</span>
                 )}
@@ -146,6 +144,8 @@ const CarRace = () => {
   );
 };
 
+export default CarRace;
+
 const getCarImage = (id, idx) => {
   const carImages = [
     '/car1.png',
@@ -155,5 +155,3 @@ const getCarImage = (id, idx) => {
   ];
   return carImages[idx % carImages.length];
 };
-
-export default CarRace;

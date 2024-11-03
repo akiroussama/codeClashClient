@@ -1,246 +1,174 @@
 /* CarRace.css */
-
-/* Race Container */
 .race-container {
-    padding: 20px;
-    max-width: 1200px;
+    padding: 2rem;
+    max-width: 1400px;
     margin: 0 auto;
-    /* Gradient Background */
-    background: linear-gradient(-45deg, #1e3c72, #2a5298, #1e3c72, #2a5298);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    color: #fff;
+    background: #1e3c72;
+    border-radius: 16px;
+    color: white;
   }
   
-  /* Gradient Animation */
-  @keyframes gradientBG {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
+  .race-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
   }
   
-  /* Race Track */
+  .race-header h2 {
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .flag-indicators {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .start-indicator,
+  .finish-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+  }
+  
   .race-track {
     position: relative;
-    padding: 40px 0; /* Increased padding for better spacing */
+    padding: 0 60px;
+    margin-top: 3rem;
   }
   
-  /* Start and Finish Lines */
-  .start-line, .finish-line {
+  .start-line,
+  .finish-line {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 2px;
-    z-index: 1;
-    overflow: visible;
+    width: 4px;
+    z-index: 2;
   }
   
   .start-line {
-    left: 10px;
+    left: 0;
     background: #ff4444;
   }
   
   .finish-line {
-    right: 10px;
+    right: 0;
     background: #4CAF50;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
   }
   
-  /* Flag Container */
-  .flag-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-  
-  .flag-flag {
-    font-size: 2em;
-    animation: wave 2s infinite;
-  }
-  
-  .flag-text {
-    margin-left: 8px;
-    font-size: 1.2em;
-    font-weight: bold;
-    animation: float 3s ease-in-out infinite;
-  }
-  
-  /* Waving Animation */
-  @keyframes wave {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(5deg); }
-    50% { transform: rotate(0deg); }
-    75% { transform: rotate(-5deg); }
-    100% { transform: rotate(0deg); }
-  }
-  
-  /* Floating Text Animation */
-  @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-5px); }
-    100% { transform: translateY(0px); }
-  }
-  
-  /* Finish Line Glow */
-  .finish-line-glow {
-    position: absolute;
-    top: -20px;
-    bottom: -20px;
-    left: -10px;
-    right: -10px;
-    border: 4px solid rgba(76, 175, 80, 0.5);
-    border-radius: 50%;
-    animation: glow 2s infinite;
-  }
-  
-  @keyframes glow {
-    0% {
-      box-shadow: 0 0 10px rgba(76, 175, 80, 0.5),
-                  0 0 20px rgba(76, 175, 80, 0.5),
-                  0 0 30px rgba(76, 175, 80, 0.5);
-    }
-    50% {
-      box-shadow: 0 0 15px rgba(76, 175, 80, 0.7),
-                  0 0 25px rgba(76, 175, 80, 0.7),
-                  0 0 35px rgba(76, 175, 80, 0.7);
-    }
-    100% {
-      box-shadow: 0 0 10px rgba(76, 175, 80, 0.5),
-                  0 0 20px rgba(76, 175, 80, 0.5),
-                  0 0 30px rgba(76, 175, 80, 0.5);
-    }
-  }
-  
-  /* Car Row */
   .car-row {
-    display: flex;
+    display: grid;
+    grid-template-columns: 200px 1fr 200px;
+    gap: 2rem;
+    margin-bottom: 2rem;
     align-items: center;
-    margin-bottom: 40px; /* Increased margin for better spacing */
-    gap: 20px;
   }
   
-  /* User Info */
-  .user-info {
-    width: 150px;
-    display: flex;
-    flex-direction: column;
-    color: #fff;
+  .player-info {
+    padding-left: 1rem;
   }
   
-  .user-name {
+  .player-name {
+    font-size: 1.2rem;
     font-weight: bold;
-    margin-bottom: 4px;
     color: #FFD700;
+    margin-bottom: 0.25rem;
   }
   
   .project-name {
-    font-size: 0.9em;
-    color: #f0f0f0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
   }
   
-  /* Progress Info */
-  .progress-info {
-    width: 150px;
-    text-align: right;
-    color: #fff;
-  }
-  
-  .finished-badge {
-    margin-left: 8px;
-    padding: 4px 8px;
-    background: #4CAF50;
-    color: white;
-    border-radius: 12px;
-    font-size: 0.8em;
-    display: inline-block;
-  }
-  
-  /* Track */
-  .track {
+  .track-container {
     position: relative;
-    flex-grow: 1;
+    width: 100%;
+  }
+  
+  .track {
     height: 60px;
-    background: #ccc;
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    position: relative;
     overflow: visible;
-    margin: 0 10px;
-    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
   }
   
-  /* Lane Markers */
-  .track::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 2px;
-    background: linear-gradient(transparent 50%, rgba(255, 255, 255, 0.7) 50%);
-    background-size: 100% 20px;
-    animation: laneMarkerMove 2s linear infinite;
-  }
-  
-  @keyframes laneMarkerMove {
-    0% {
-      background-position: 0 0;
-    }
-    100% {
-      background-position: 0 20px;
-    }
-  }
-  
-  /* Car */
   .car {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     width: 50px;
     height: auto;
-    transition: filter 0.3s ease, transform 0.3s ease;
-    border: 2px solid transparent;
-    border-radius: 8px;
+    transition: filter 0.3s ease;
   }
   
   .car.leader {
     filter: drop-shadow(0 0 12px gold);
-    z-index: 2;
-    border-color: gold;
   }
   
   .car.finished {
     filter: drop-shadow(0 0 16px #4CAF50);
-    border-color: #4CAF50;
   }
   
-  /* Hover Effect */
-  .car:hover {
-    transform: translateY(-50%) scale(1.1);
-    border-color: #ff4081;
+  .progress-info {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
   }
   
-  /* Start and Finish Line Positioning */
-  .start-line .flag-container {
-    position: absolute;
-    top: -30px;
-    left: -10px;
+  .test-count {
+    font-size: 1.1rem;
+    color: white;
   }
   
-  .finish-line .flag-container {
-    position: absolute;
-    top: -30px;
-    right: -10px;
+  .finished-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: #4CAF50;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    animation: pulse 2s infinite;
   }
   
-  /* Confetti Overlay */
-  .confetti-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .car-row {
+      grid-template-columns: 150px 1fr 150px;
+      gap: 1rem;
+    }
+  
+    .player-name {
+      font-size: 1rem;
+    }
+  
+    .test-count {
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .race-container {
+      padding: 1rem;
+    }
+  
+    .race-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .car-row {
+      grid-template-columns: 120px 1fr 120px;
+    }
   }
