@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { createGlobalStyle } from 'styled-components';
 
 const RaceTrackContainer = styled.div`
   width: 100%;
