@@ -1,240 +1,275 @@
-/* Continuing CarRace.css */
-.track {
-  height: 60px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 30px;
-  position: relative;
-  overflow: visible;
-  transform: perspective(1000px) rotateX(10deg);
-  transform-style: preserve-3d;
-  box-shadow: 
-    0 20px 30px rgba(0, 0, 0, 0.2),
-    inset 0 -10px 20px rgba(0, 0, 0, 0.1);
-}
-
-.track::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    90deg,
-    transparent 0%,
-    transparent 48%,
-    rgba(255, 255, 255, 0.1) 49%,
-    rgba(255, 255, 255, 0.1) 51%,
-    transparent 52%,
-    transparent 100%
-  );
-  animation: trackMove 20s linear infinite;
-}
-
-@keyframes trackMove {
-  from { background-position: 0 0; }
-  to { background-position: 100% 0; }
-}
-
-/* Car and Effects Styles */
-.car-wrapper {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 60px;
-  height: 40px;
-  z-index: 3;
-}
-
-.car-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.car {
-  width: 100%;
-  height: auto;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  transition: filter 0.3s ease;
-}
-
-.car.leader {
-  filter: drop-shadow(0 0 12px gold);
-  animation: carBounce 0.6s infinite;
-}
-
-@keyframes carBounce {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-2px) rotate(2deg); }
-}
-
-/* Light Trail Effect */
-.light-trail {
-  position: absolute;
-  left: -80px;
-  top: 50%;
-  width: 80px;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 215, 0, 0) 0%,
-    rgba(255, 215, 0, 0.3) 50%,
-    rgba(255, 165, 0, 0.7) 100%
-  );
-  filter: blur(4px);
-  transform-origin: right center;
-  animation: trailPulse 1.5s infinite;
-}
-
-@keyframes trailPulse {
-  0%, 100% { opacity: 0.4; transform: scaleX(1); }
-  50% { opacity: 0.8; transform: scaleX(1.2); }
-}
-
-/* Speed Lines */
-.speed-lines {
-  position: absolute;
-  left: -40px;
-  top: 0;
-  height: 100%;
-  width: 40px;
-  overflow: hidden;
-}
-
-.speed-line {
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.6);
-  transform-origin: right center;
-  animation: speedLine 0.5s infinite;
-  animation-delay: var(--delay);
-}
-
-@keyframes speedLine {
-  0% { transform: scaleX(0) translateX(0); opacity: 0; }
-  50% { transform: scaleX(1) translateX(-10px); opacity: 1; }
-  100% { transform: scaleX(0) translateX(-20px); opacity: 0; }
-}
-
-/* Progress Particles */
-.progress-particles {
-  position: absolute;
-  top: -20px;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.particle {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: radial-gradient(circle, #FFD700, transparent);
-  border-radius: 50%;
-  animation: floatParticle 2s ease-out infinite;
-  animation-delay: var(--delay);
-  transform: translateX(var(--x));
-}
-
-@keyframes floatParticle {
-  0% { opacity: 0; transform: translateY(0) scale(0); }
-  50% { opacity: 1; transform: translateY(-20px) scale(1); }
-  100% { opacity: 0; transform: translateY(-40px) scale(0); }
-}
-
-/* Progress Info Styles */
-.progress-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: flex-end;
-}
-
-.progress-indicator {
-  width: 100%;
-  height: 20px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-}
-
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #4CAF50, #8BC34A);
-  transition: width 0.3s ease;
-}
-
-.progress-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.race-track-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+  border-radius: 16px;
   color: white;
-  font-size: 0.8rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.race-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+
+.race-title {
+  font-size: 2.5rem;
   font-weight: bold;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  color: #FFD700;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
-.finished-badge {
+.checkered-flag {
+  font-size: 2rem;
+  animation: waveFlag 2s infinite;
+}
+
+.race-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.project-selector {
   padding: 0.5rem 1rem;
-  background: linear-gradient(45deg, #4CAF50, #45a049);
-  border-radius: 20px;
-  font-size: 0.9rem;
-  animation: finishPulse 1.5s infinite;
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
-@keyframes finishPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); box-shadow: 0 4px 12px rgba(76, 175, 80, 0.6); }
-  100% { transform: scale(1); }
+.refresh-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #4CAF50;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
 }
 
-/* Cloud Environment */
-.clouds {
+.refresh-button:hover {
+  background: #45a049;
+  transform: scale(1.05);
+}
+
+.refresh-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.race-tracks {
+  position: relative;
+  padding: 0 60px;
+}
+
+.track-markers {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
 }
 
-.cloud {
+.start-line,
+.finish-line {
   position: absolute;
-  width: 100px;
-  height: 40px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.start-line {
+  left: 0;
+  background: #ff4444;
+  box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+}
+
+.finish-line {
+  right: 0;
+  background: #4CAF50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.flag {
+  position: absolute;
+  top: -30px;
+  font-size: 1.5rem;
+}
+
+.label {
+  position: absolute;
+  top: -50px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.race-lane {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.player-info {
+  padding-left: 1rem;
+}
+
+.player-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #FFD700;
+  margin: 0 0 0.25rem 0;
+}
+
+.project-name {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.track {
+  height: 60px;
   background: rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  position: relative;
+  overflow: visible;
+  border: 2px dashed rgba(255, 215, 0, 0.3);
+}
+
+.race-car {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 40px;
+  z-index: 2;
+}
+
+.car-image {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+.car-effects {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.light-trail {
+  position: absolute;
+  left: -80px;
+  top: 50%;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    rgba(255, 215, 0, 0) 0%,
+    rgba(255, 215, 0, 0.3) 50%,
+    rgba(255, 165, 0, 0.7) 100%
+  );
+  filter: blur(4px);
+}
+
+.speed-lines {
+  position: absolute;
+  left: -40px;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+.crown {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  animation: floatCrown 1s infinite ease-in-out;
+}
+
+.progress-info {
+  text-align: right;
+  padding-right: 1rem;
+}
+
+.test-count {
+  font-size: 1.1rem;
+  color: white;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.finished-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(45deg, #4CAF50, #45a049);
   border-radius: 20px;
-  animation: cloudFloat linear infinite;
-  animation-duration: var(--speed);
+  font-size: 0.9rem;
+  animation: pulseBadge 1.5s infinite;
 }
 
-@keyframes cloudFloat {
-  from { transform: translateX(-100px); }
-  to { transform: translateX(calc(100vw + 100px)); }
+.error-message {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff4444;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  animation: slideUp 0.3s ease-out;
 }
 
-/* Responsive Design */
+@keyframes waveFlag {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+@keyframes floatCrown {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes slideUp {
+  from { transform: translate(-50%, 100%); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+
 @media (max-width: 1200px) {
-  .car-row {
+  .race-lane {
     grid-template-columns: 150px 1fr 150px;
     gap: 1rem;
-  }
-
-  .player-name {
-    font-size: 1rem;
-  }
-
-  .progress-text {
-    font-size: 0.7rem;
   }
 }
 
 @media (max-width: 768px) {
-  .race-container {
+  .race-track-container {
     padding: 1rem;
   }
 
@@ -243,26 +278,15 @@
     gap: 1rem;
   }
 
-  .title-section {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .car-row {
+  .race-lane {
     grid-template-columns: 120px 1fr 120px;
   }
 
-  .glowing-text {
-    font-size: 1.5rem;
+  .player-name {
+    font-size: 1rem;
   }
 
-  .controls {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .project-filter,
-  .refresh-button {
-    width: 100%;
+  .test-count {
+    font-size: 0.9rem;
   }
 }
