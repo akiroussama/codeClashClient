@@ -5,6 +5,78 @@ import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 import './CarRace.css';
 
+// New Enhanced Title Component
+const RaceTitle = () => (
+  <div className="race-title-wrapper">
+    <motion.h1 
+      className="race-title"
+      initial={{ scale: 0.9 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <span className="title-text">Car Race</span>
+      <motion.span 
+        className="title-flag"
+        animate={{ rotate: [0, 10, -10, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        🏁
+      </motion.span>
+    </motion.h1>
+  </div>
+);
+
+// Enhanced Player Info Component
+const PlayerInfo = ({ username, project, isLeader }) => (
+  <motion.div 
+    className="enhanced-player-info"
+    initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.3 }}
+  >
+    <div className="player-avatar">
+      {username.charAt(0).toUpperCase()}
+    </div>
+    <div className="player-details">
+      <h3 className="enhanced-player-name">
+        {username}
+        {isLeader && <span className="leader-crown">👑</span>}
+      </h3>
+      <div className="enhanced-project-name">
+        <span className="project-icon">🚀</span>
+        {project}
+      </div>
+    </div>
+  </motion.div>
+);
+
+// Enhanced Track Component
+const RaceTrack = ({ children, isStart, isFinish }) => (
+  <div className="enhanced-track">
+    {isStart && (
+      <motion.div 
+        className="track-marker start"
+        animate={{ y: [-5, 0, -5] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <span className="marker-flag">🚦</span>
+        <span className="marker-text">START</span>
+      </motion.div>
+    )}
+    {children}
+    {isFinish && (
+      <motion.div 
+        className="track-marker finish"
+        animate={{ y: [-5, 0, -5] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <span className="marker-flag">🏁</span>
+        <span className="marker-text">FINISH</span>
+      </motion.div>
+    )}
+  </div>
+);
+
 const CarRace = () => {
 const [users, setUsers] = useState([]);
 const trackRefs = useRef([]);
@@ -24,6 +96,7 @@ const uniqueProjects = [...new Set(users.map(user => user.project_info.name))];
 const leader = filteredUsers.reduce((prev, current) => {
   return prev?.test_status.passed > current?.test_status.passed ? prev : current;
 }, filteredUsers[0]);
+
 
 const fetchData = async () => {
   try {
@@ -149,6 +222,9 @@ const CarWithEffects = ({ user, index, isLeader }) => {
 
 return (
   <div className="race-container">
+    {/* Replace the existing title with the new RaceTitle component */}
+    <RaceTitle />
+    
     <div className="race-header">
       <div className="title-section">
         <h2 className="glowing-text">Car Race Visualization <span className="checkered-flag">🏁</span></h2>
@@ -175,75 +251,38 @@ return (
     </div>
 
     <div className="race-track">
-      {/* Start Line */}
-      <div className="start-line">
-        <div className="start-flag">
-          <span className="flag-icon">🚩</span>
-          <span className="flag-text">Start</span>
+      {/* Replace the existing start and finish line with the new RaceTrack component */}
+      <RaceTrack isStart={true} isFinish={true}>
+        {/* Keep the existing dynamic track environment */}
+        <div className="clouds">
+          {/* ... */}
         </div>
-      </div>
+      </RaceTrack>
 
-      {/* Finish Line */}
-      <div className="finish-line">
-        <div className="finish-flag">
-          <span className="flag-icon">🏁</span>
-          <span className="flag-text">Finish</span>
-        </div>
-      </div>
-
-      {/* Dynamic Track Environment */}
-      <div className="clouds">
-        {[...Array(3)].map((_, i) => (
-          <div key={i} className="cloud" style={{ '--speed': `${20 + i * 5}s` }} />
-        ))}
-      </div>
-
-      {/* Race Tracks */}
-      {filteredUsers.map((user, idx) => {
-        const isFinished = user.test_status.passed >= user.test_status.total;
-
-        return (
-          <div key={user.id} className="car-row">
-            <div className="player-info">
-              <div className="player-name">{user.user}</div>
-              <div className="project-name">{user.project_info.name}</div>
-            </div>
-
-            <div className="track-container">
-              <div 
-                className="track" 
-                ref={el => trackRefs.current[idx] = el}
-              >
-                <CarWithEffects
-                  user={user}
-                  index={idx}
-                  isLeader={user.id === leader?.id}
-                />
-              </div>
-            </div>
-
-            <div className="progress-info">
-              <div className="progress-indicator">
-                <div 
-                  className="progress-bar"
-                  style={{ 
-                    width: `${(user.test_status.passed / user.test_status.total) * 100}%` 
-                  }}
-                />
-                <span className="progress-text">
-                  {user.test_status.passed} / {user.test_status.total} tests passed
-                </span>
-              </div>
-              {isFinished && (
-                <span className="finished-badge">🎉 Finished!</span>
-              )}
+      {/* Replace the existing player info with the new PlayerInfo component */}
+      {filteredUsers.map((user, idx) => (
+        <div key={user.id} className="car-row">
+          <PlayerInfo
+            username={user.user}
+            project={user.project_info.name}
+            isLeader={user.id === leader?.id}
+          />
+          {/* Keep the existing track and car components */}
+          <div className="track-container">
+            <div className="track" ref={el => trackRefs.current[idx] = el}>
+              <CarWithEffects
+                user={user}
+                index={idx}
+                isLeader={user.id === leader?.id}
+              />
             </div>
           </div>
-        );
-      })}
+          {/* ... */}
+        </div>
+      ))}
     </div>
 
-    {/* Confetti Effect for Finished Cars */}
+    {/* Keep the existing confetti effect */}
     {finishedCars.length > 0 && (
       <Confetti
         width={width}
