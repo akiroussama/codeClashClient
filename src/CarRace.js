@@ -11,12 +11,23 @@ const CarRace = () => {
   const [trackWidths, setTrackWidths] = useState([]);
   const [finishedCars, setFinishedCars] = useState([]);
   const { width, height } = useWindowSize();
+  const [highestProgress, setHighestProgress] = useState({});
 
   const fetchData = async () => {
     try {
       const response = await fetch('https://codeclashserver.onrender.com/filtered-test-results');
       const data = await response.json();
       setUsers(data);
+
+      const newHighestProgress = { ...highestProgress };
+      data.forEach(user => {
+        const currentProgress = user.test_status.passed / user.test_status.total;
+        newHighestProgress[user.id] = Math.max(
+          currentProgress,
+          highestProgress[user.id] || 0
+        );
+      });
+      setHighestProgress(newHighestProgress);
 
       const newlyFinished = data.filter(user => 
         user.test_status.passed >= user.test_status.total && 
@@ -91,7 +102,8 @@ const CarRace = () => {
 
         {users.map((user, idx) => {
           const isFinished = user.test_status.passed >= user.test_status.total;
-          const progress = user.test_status.passed / user.test_status.total;
+          const currentProgress = user.test_status.passed / user.test_status.total;
+          const progress = Math.max(currentProgress, highestProgress[user.id] || 0);
           const trackWidth = trackWidths[idx] || 0;
           const maxX = trackWidth - 60;
           const xPos = isFinished ? maxX : progress * maxX;
