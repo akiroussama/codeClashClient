@@ -1,3 +1,64 @@
+/* Add these CSS variables at the top */
+:root {
+  --primary-color: #1a237e;
+  --secondary-color: #303f9f;
+  --accent-color: #ffd700;
+  --text-color: #ffffff;
+  --track-color: #263238;
+  --progress-color: #4caf50;
+}
+
+/* Add these new title styles */
+.race-title-wrapper {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.race-title {
+  font-size: 3rem;
+  color: var(--text-color);
+  text-shadow: 0 0 10px var(--accent-color);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.title-flag {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 0 5px var(--accent-color));
+}
+
+/* Add enhanced player info styles */
+.enhanced-player-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.player-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+}
+
 /* Continuing CarRace.css */
 .track {
   height: 60px;
