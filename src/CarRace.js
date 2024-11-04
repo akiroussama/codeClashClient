@@ -30,9 +30,7 @@ const CarRace = () => {
 
   useEffect(() => {
     fetchData();
-    const intervalId = setInterval(fetchData, 60000);
-    return () => clearInterval(intervalId);
-  }, [finishedCars]);
+  }, []);
 
   useEffect(() => {
     const updateTrackWidths = () => {
