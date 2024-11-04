@@ -1,252 +1,268 @@
-/* CarRace.css */
-.race-container {
-    padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-    background: #1e3c72;
-    border-radius: 16px;
-    color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .race-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-  
-  .race-header h2 {
-    font-size: 2rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #FFD700;
-  }
-  
-  .flag-indicators {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translateY(-100%);
-    display: flex;
-    gap: 2rem;
-  }
-  
-  .start-indicator,
-  .finish-indicator {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 500;
-  }
-  
-  .start-indicator {
-    position: absolute;
-    left: 0;
-    top: 0;
-    transform: translateY(-100%);
-  }
-  
-  .finish-indicator {
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: translateY(-100%);
-  }
-  
-  .race-track {
-    position: relative;
-    padding: 0 60px;
-    margin-top: 3rem;
-    border-top: 2px dashed #FFD700;
-    border-bottom: 2px dashed #FFD700;
-  }
-  
-  .start-line,
-  .finish-line {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    z-index: 2;
-  }
-  
-  .start-line {
-    left: 0;
-    background: #ff4444;
-  }
-  
-  .finish-line {
-    right: 0;
-    background: #4CAF50;
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
-  }
-  
+/* Continuing CarRace.css */
+.track {
+  height: 60px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  position: relative;
+  overflow: visible;
+  transform: perspective(1000px) rotateX(10deg);
+  transform-style: preserve-3d;
+  box-shadow: 
+    0 20px 30px rgba(0, 0, 0, 0.2),
+    inset 0 -10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.track::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 48%,
+    rgba(255, 255, 255, 0.1) 49%,
+    rgba(255, 255, 255, 0.1) 51%,
+    transparent 52%,
+    transparent 100%
+  );
+  animation: trackMove 20s linear infinite;
+}
+
+@keyframes trackMove {
+  from { background-position: 0 0; }
+  to { background-position: 100% 0; }
+}
+
+/* Car and Effects Styles */
+.car-wrapper {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 40px;
+  z-index: 3;
+}
+
+.car-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.car {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  transition: filter 0.3s ease;
+}
+
+.car.leader {
+  filter: drop-shadow(0 0 12px gold);
+  animation: carBounce 0.6s infinite;
+}
+
+@keyframes carBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-2px) rotate(2deg); }
+}
+
+/* Light Trail Effect */
+.light-trail {
+  position: absolute;
+  left: -80px;
+  top: 50%;
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 215, 0, 0) 0%,
+    rgba(255, 215, 0, 0.3) 50%,
+    rgba(255, 165, 0, 0.7) 100%
+  );
+  filter: blur(4px);
+  transform-origin: right center;
+  animation: trailPulse 1.5s infinite;
+}
+
+@keyframes trailPulse {
+  0%, 100% { opacity: 0.4; transform: scaleX(1); }
+  50% { opacity: 0.8; transform: scaleX(1.2); }
+}
+
+/* Speed Lines */
+.speed-lines {
+  position: absolute;
+  left: -40px;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  overflow: hidden;
+}
+
+.speed-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  transform-origin: right center;
+  animation: speedLine 0.5s infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes speedLine {
+  0% { transform: scaleX(0) translateX(0); opacity: 0; }
+  50% { transform: scaleX(1) translateX(-10px); opacity: 1; }
+  100% { transform: scaleX(0) translateX(-20px); opacity: 0; }
+}
+
+/* Progress Particles */
+.progress-particles {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #FFD700, transparent);
+  border-radius: 50%;
+  animation: floatParticle 2s ease-out infinite;
+  animation-delay: var(--delay);
+  transform: translateX(var(--x));
+}
+
+@keyframes floatParticle {
+  0% { opacity: 0; transform: translateY(0) scale(0); }
+  50% { opacity: 1; transform: translateY(-20px) scale(1); }
+  100% { opacity: 0; transform: translateY(-40px) scale(0); }
+}
+
+/* Progress Info Styles */
+.progress-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-end;
+}
+
+.progress-indicator {
+  width: 100%;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.finished-badge {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(45deg, #4CAF50, #45a049);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  animation: finishPulse 1.5s infinite;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+}
+
+@keyframes finishPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); box-shadow: 0 4px 12px rgba(76, 175, 80, 0.6); }
+  100% { transform: scale(1); }
+}
+
+/* Cloud Environment */
+.clouds {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.cloud {
+  position: absolute;
+  width: 100px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  animation: cloudFloat linear infinite;
+  animation-duration: var(--speed);
+}
+
+@keyframes cloudFloat {
+  from { transform: translateX(-100px); }
+  to { transform: translateX(calc(100vw + 100px)); }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
   .car-row {
-    display: grid;
-    grid-template-columns: 200px 1fr 200px;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    align-items: center;
-    transition: background 0.3s ease;
-  }
-  
-  .car-row:hover {
-    background: rgba(255, 255, 255, 0.1);
-  }
-  
-  .player-info {
-    padding-left: 1rem;
-  }
-  
-  .player-name {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #FFD700;
-    margin-bottom: 0.25rem;
-    transition: color 0.3s ease;
-  }
-  
-  .player-name:hover {
-    color: #FF5722;
-  }
-  
-  .project-name {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.9rem;
-  }
-  
-  .track-container {
-    position: relative;
-    width: 100%;
-  }
-  
-  .track {
-    height: 60px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 30px;
-    position: relative;
-    overflow: visible;
-  }
-  
-  .car {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 50px;
-    height: auto;
-    transition: filter 0.3s ease, transform 0.3s ease;
-  }
-  
-  .car.leader {
-    filter: drop-shadow(0 0 12px gold);
-    transform: translateY(-50%) scale(1.1);
-  }
-  
-  .car.finished {
-    filter: drop-shadow(0 0 16px #4CAF50);
-  }
-  
-  .progress-info {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .test-count {
-    font-size: 1.1rem;
-    color: white;
-  }
-  
-  .finished-badge {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background: #4CAF50;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    animation: pulse 2s infinite;
-    color: white;
-  }
-  
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-  }
-  
-  .start-flag {
-    position: absolute;
-    left: 0;
-    top: 0;
-    transform: translateY(-100%);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .finish-flag {
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: translateY(-100%);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 1200px) {
-    .car-row {
-      grid-template-columns: 150px 1fr 150px;
-      gap: 1rem;
-    }
-  
-    .player-name {
-      font-size: 1rem;
-    }
-  
-    .test-count {
-      font-size: 0.9rem;
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .race-container {
-      padding: 1rem;
-    }
-  
-    .race-header {
-      flex-direction: column;
-      gap: 1rem;
-    }
-  
-    .car-row {
-      grid-template-columns: 120px 1fr 120px;
-    }
-  }
-  
-  .title-section {
-    display: flex;
-    align-items: center;
+    grid-template-columns: 150px 1fr 150px;
     gap: 1rem;
   }
-  
-  .refresh-button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
+
+  .player-name {
     font-size: 1rem;
-    display: flex;
+  }
+
+  .progress-text {
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .race-container {
+    padding: 1rem;
+  }
+
+  .race-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .title-section {
+    flex-direction: column;
     align-items: center;
-    gap: 4px;
-    transition: background-color 0.2s;
   }
-  
-  .refresh-button:hover {
-    background-color: #45a049;
+
+  .car-row {
+    grid-template-columns: 120px 1fr 120px;
   }
+
+  .glowing-text {
+    font-size: 1.5rem;
+  }
+
+  .controls {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .project-filter,
+  .refresh-button {
+    width: 100%;
+  }
+}
