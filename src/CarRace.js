@@ -12,24 +12,23 @@ const CarRace = () => {
   const [finishedCars, setFinishedCars] = useState([]);
   const { width, height } = useWindowSize();
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://codeclashserver.onrender.com/filtered-test-results');
+      const data = await response.json();
+      setUsers(data);
+
+      const newlyFinished = data.filter(user => 
+        user.test_status.passed >= user.test_status.total && 
+        !finishedCars.includes(user.id)
+      ).map(user => user.id);
+      setFinishedCars(prev => [...prev, ...newlyFinished]);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('https://codeclashserver.onrender.com/filtered-test-results');
-        const data = await response.json();
-        setUsers(data);
-
-        // Identify finished cars
-        const newlyFinished = data.filter(user => 
-          user.test_status.passed >= user.test_status.total && 
-          !finishedCars.includes(user.id)
-        ).map(user => user.id);
-        setFinishedCars(prev => [...prev, ...newlyFinished]);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
     fetchData();
     const intervalId = setInterval(fetchData, 60000);
     return () => clearInterval(intervalId);
@@ -66,10 +65,16 @@ const CarRace = () => {
   return (
     <div className="race-container">
       <div className="race-header">
-      <div className="title-section">
-        <h2>Car Race Visualization <span className="checkered-flag">🏁</span></h2>
+        <div className="title-section">
+          <h2>Car Race Visualization <span className="checkered-flag">🏁</span></h2>
+          <button 
+            onClick={fetchData}
+            className="refresh-button"
+          >
+            🔄 Refresh
+          </button>
+        </div>
       </div>
-    </div>
 
       <div className="race-track">
         <div className="start-line">
