@@ -12,6 +12,17 @@ const CarRace = () => {
   const [finishedCars, setFinishedCars] = useState([]);
   const { width, height } = useWindowSize();
   const [highestProgress, setHighestProgress] = useState({});
+  const [projectFilter, setProjectFilter] = useState('');
+
+  const filteredUsers = users.filter(user => 
+    projectFilter === '' || user.project_info.name === projectFilter
+  );
+
+  const uniqueProjects = [...new Set(users.map(user => user.project_info.name))];
+
+  const leader = filteredUsers.reduce((prev, current) => {
+    return prev?.test_status.passed > current?.test_status.passed ? prev : current;
+  }, filteredUsers[0]);
 
   const fetchData = async () => {
     try {
@@ -67,21 +78,29 @@ const CarRace = () => {
     return () => window.removeEventListener('resize', debouncedUpdate);
   }, [users]);
 
-  const leader = users.reduce((prev, current) => {
-    return prev?.test_status.passed > current?.test_status.passed ? prev : current;
-  }, users[0]);
-
   return (
     <div className="race-container">
       <div className="race-header">
         <div className="title-section">
           <h2>Car Race Visualization <span className="checkered-flag">🏁</span></h2>
-          <button 
-            onClick={fetchData}
-            className="refresh-button"
-          >
-            🔄 Refresh
-          </button>
+          <div className="controls">
+            <select 
+              value={projectFilter} 
+              onChange={(e) => setProjectFilter(e.target.value)}
+              className="project-filter"
+            >
+              <option value="">All Projects</option>
+              {uniqueProjects.map(project => (
+                <option key={project} value={project}>{project}</option>
+              ))}
+            </select>
+            <button 
+              onClick={fetchData}
+              className="refresh-button"
+            >
+              🔄 Refresh
+            </button>
+          </div>
         </div>
       </div>
 
@@ -100,7 +119,7 @@ const CarRace = () => {
         </div>
         </div>
 
-        {users.map((user, idx) => {
+        {filteredUsers.map((user, idx) => {
           const isFinished = user.test_status.passed >= user.test_status.total;
           const currentProgress = user.test_status.passed / user.test_status.total;
           const progress = Math.max(currentProgress, highestProgress[user.id] || 0);
