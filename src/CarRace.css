@@ -61,64 +61,124 @@
 
 /* Continuing CarRace.css */
 .track {
-  height: 60px;
-  background: #404040;
-  border-radius: 30px;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    #2c2c2c 0%,
+    #404040 30%,
+    #404040 70%,
+    #2c2c2c 100%
+  );
+  border-radius: 40px;
   position: relative;
   overflow: visible;
-  transform: perspective(1000px) rotateX(10deg);
+  transform: perspective(1000px) rotateX(15deg);
   transform-style: preserve-3d;
   box-shadow: 
-    0 20px 30px rgba(0, 0, 0, 0.2),
-    inset 0 -10px 20px rgba(0, 0, 0, 0.3);
-  margin: 0 40px;
+    0 25px 35px rgba(0, 0, 0, 0.3),
+    0 15px 20px rgba(0, 0, 0, 0.2),
+    inset 0 -10px 20px rgba(0, 0, 0, 0.4),
+    inset 0 10px 20px rgba(255, 255, 255, 0.1);
+  margin: 0 60px;
 }
 
-.track::before {
-  content: '🚦' !important;
-  left: -48px !important;
-  font-size: 48px !important;
-}
-
-.track::after {
-  right: -48px;
-}
-
-.track::before,
-.track::after {
-  content: '🏁' !important;
-  font-size: 36px !important;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 5;
-}
-
-.track::before {
-  content: '🚦' !important;
-  left: -48px !important;
-  font-size: 48px !important;
-}
-
-.track::after {
-  right: -48px;
-}
-
+/* Track texture and markings */
 .track::before {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
-  background: repeating-linear-gradient(
-    90deg,
-    transparent 0%,
-    transparent 48%,
-    rgba(255, 255, 255, 0.15) 49%,
-    rgba(255, 255, 255, 0.15) 51%,
-    transparent 52%,
-    transparent 100%
-  );
+  background: 
+    /* Lane markings */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 48%,
+      rgba(255, 255, 255, 0.12) 49%,
+      rgba(255, 255, 255, 0.12) 51%,
+      transparent 52%,
+      transparent 100%
+    ),
+    /* Asphalt texture */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
   animation: trackMove 20s linear infinite;
+  border-radius: 40px;
+}
+
+/* Side barriers */
+.track::after {
+  content: '';
+  position: absolute;
+  width: calc(100% + 40px);
+  height: 20px;
+  left: -20px;
+  bottom: -10px;
+  background: grey;
+  background-size: 100px 100%;
+  border-radius: 10px;
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.2),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.3);
+  z-index: -1;
+}
+
+/* Track markers */
+.track-marker {
+  position: absolute;
+  top: 10%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  z-index: 10;
+}
+
+.track-marker.start {
+  left: -56px; /* Position at the start of the track */
+}
+
+.track-marker.finish {
+  right: -78px; /* Position at the end of the track */
+}
+
+.marker-flag {
+  font-size: 4rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.marker-text {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+/* Optional: Add glow effects for night mode */
+.night-mode .marker-flag {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+}
+
+@keyframes trackMove {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 100% 0;
+  }
+}
+
+/* Optional: Add a glow effect for night racing */
+.track.night-mode {
+  box-shadow: 
+    0 25px 35px rgba(0, 0, 0, 0.4),
+    0 15px 20px rgba(0, 0, 0, 0.3),
+    inset 0 -10px 20px rgba(0, 0, 0, 0.5),
+    inset 0 10px 20px rgba(255, 255, 255, 0.05),
+    0 0 50px rgba(255, 165, 0, 0.2);
 }
 
 @keyframes trackMove {
@@ -357,4 +417,466 @@
   .refresh-button {
     width: 100%;
   }
+}
+.track-container {
+  perspective: 1000px;
+  padding: 40px;
+  background: #1a1a1a;
+  border-radius: 20px;
+}
+
+.track {
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    #232323 0%,
+    #2c2c2c 20%,
+    #333333 50%,
+    #2c2c2c 80%,
+    #232323 100%
+  );
+  border-radius: 50px;
+  position: relative;
+  overflow: visible;
+  transform: perspective(2000px) rotateX(25deg);
+  transform-style: preserve-3d;
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.5),
+    0 15px 30px rgba(0, 0, 0, 0.3),
+    inset 0 -15px 30px rgba(0, 0, 0, 0.4),
+    inset 0 15px 30px rgba(255, 255, 255, 0.1);
+  margin: 0 80px;
+}
+
+/* Enhanced track texture */
+.track::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    /* Lane markings */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 47%,
+      rgba(255, 255, 255, 0.15) 48%,
+      rgba(255, 255, 255, 0.15) 52%,
+      transparent 53%,
+      transparent 100%
+    ),
+    /* Asphalt grain */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.12'/%3E%3C/svg%3E");
+  border-radius: 50px;
+  animation: trackMove 15s linear infinite;
+}
+
+/* Enhanced barriers with reflective strips */
+.track-barrier {
+  content: '';
+  position: absolute;
+  width: calc(100% + 60px);
+  height: 30px;
+  left: -30px;
+  bottom: -15px;
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      #ff0000 0px,
+      #ff0000 40px,
+      #ffffff 40px,
+      #ffffff 80px
+    );
+  background-size: 80px 100%;
+  border-radius: 15px;
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.4),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.4),
+    inset 0 5px 10px rgba(255, 255, 255, 0.2);
+  z-index: -1;
+  animation: barrierGlow 2s ease-in-out infinite;
+}
+
+/* Reflective dots on track */
+.track-dots {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  background-size: 40px 40px;
+  animation: dotsGlow 3s ease-in-out infinite;
+}
+
+/* Start/Finish markers */
+
+
+.track-start {
+  left: -60px;
+  background: 
+    linear-gradient(
+      90deg,
+      #333 0%,
+      #444 100%
+    );
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.track-start::before {
+  content: '🚦';
+  position: absolute;
+  font-size: 48px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.track-finish {
+  right: -60px;
+  background: repeating-linear-gradient(
+    45deg,
+    #000 0px,
+    #000 10px,
+    #fff 10px,
+    #fff 20px
+  );
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Lighting effects */
+.track-lights {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 45%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 55%,
+    transparent 100%
+  );
+  animation: lightsMove 3s linear infinite;
+}
+
+@keyframes trackMove {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 0; }
+}
+
+@keyframes barrierGlow {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
+}
+
+@keyframes dotsGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes lightsMove {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+
+/* Night mode enhancements */
+.track.night-mode {
+  background: linear-gradient(
+    to bottom,
+    #151515 0%,
+    #1a1a1a 20%,
+    #202020 50%,
+    #1a1a1a 80%,
+    #151515 100%
+  );
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.6),
+    0 15px 30px rgba(0, 0, 0, 0.4),
+    inset 0 -15px 30px rgba(0, 0, 0, 0.5),
+    inset 0 15px 30px rgba(255, 255, 255, 0.05),
+    0 0 80px rgba(255, 100, 0, 0.2);
+}
+
+.track.night-mode .track-barrier {
+  box-shadow: 
+    0 8px 20px rgba(0, 0, 0, 0.5),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.5),
+    inset 0 5px 10px rgba(255, 255, 255, 0.1),
+    0 0 30px rgba(255, 0, 0, 0.3);
+}
+
+/* CarRace.css */
+.race-container {
+  padding: 2rem;
+  background: linear-gradient(to bottom, #1a1a1a, #2d2d2d);
+  min-height: 100vh;
+  color: white;
+}
+
+.race-container.night-mode {
+  background: linear-gradient(to bottom, #0a0a0a, #1a1a1a);
+}
+
+/* Enhanced Title Styles */
+.race-title-wrapper {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.race-title {
+  font-size: 3rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.title-flag {
+  display: inline-block;
+  font-size: 2.5rem;
+}
+
+/* Enhanced Controls Section */
+.controls-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.project-filter {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
+}
+
+.refresh-button,
+.mode-toggle {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.refresh-button:hover,
+.mode-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced Track Styles */
+.track-container {
+  perspective: 1000px;
+  padding: 40px;
+  margin: 20px 0;
+}
+
+.enhanced-track {
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    #232323 0%,
+    #2c2c2c 20%,
+    #333333 50%,
+    #2c2c2c 80%,
+    #232323 100%
+  );
+  border-radius: 50px;
+  position: relative;
+  transform: perspective(2000px) rotateX(25deg);
+  transform-style: preserve-3d;
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.5),
+    0 15px 30px rgba(0, 0, 0, 0.3),
+    inset 0 -15px 30px rgba(0, 0, 0, 0.4),
+    inset 0 15px 30px rgba(255, 255, 255, 0.1);
+}
+
+.track-surface {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+.track-dots {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.1) 20%,
+      transparent 30%
+    );
+  background-size: 40px 40px;
+  animation: dotsGlow 3s ease-in-out infinite;
+}
+
+.track-lights {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.05) 45%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 55%,
+    transparent 100%
+  );
+  animation: lightsMove 3s linear infinite;
+}
+
+.track-barrier {
+  position: absolute;
+  width: calc(100% + 60px);
+  height: 30px;
+  left: -30px;
+  bottom: -15px;
+  background: repeating-linear-gradient(
+    90deg,
+    #ff0000 0px,
+    #ff0000 40px,
+    #ffffff 40px,
+    #ffffff 80px
+  );
+  background-size: 80px 100
+}
+
+/* Enhanced Car Styles */
+.car-container {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.car-image {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+  transform: scale(1.2); /* Make car slightly larger */
+}
+
+/* Car container positioning */
+.car-wrapper {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  z-index: 5;
+}
+
+/* Enhanced Track Layout */
+.race-tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.race-track-row {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+/* Improved Track Container */
+.track-container {
+  position: relative;
+  perspective: 1000px;
+  padding: 2rem;
+  background: transparent;
+  border-radius: 20px;
+  margin: 0;
+}
+
+.track {
+  position: relative;
+  height: 90px;
+  margin: 0 40px;
+  overflow: visible;
+}
+
+/* Enhanced Effects */
+.car-container.leader .car-image {
+  filter: drop-shadow(0 0 15px gold);
+  transform: scale(1.3); /* Make leader car slightly larger */
+}
+
+.car-container.finished .car-image {
+  filter: drop-shadow(0 0 20px #4CAF50);
+}
+
+/* Add particle effects behind the car */
+.speed-particles {
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 100%;
+  pointer-events: none;
+}
+
+.speed-particle {
+  position: absolute;
+  width: 4px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 2px;
+  animation: particleMove 0.5s linear infinite;
+}
+
+@keyframes particleMove {
+  from { transform: translateX(20px); opacity: 0; }
+  50% { opacity: 1; }
+  to { transform: translateX(-20px); opacity: 0; }
+}
+
+/* Enhanced Player Info */
+.enhanced-player-info {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem;
+  border-radius: 10px;
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.enhanced-player-info:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Night Mode Enhancements */
+.night-mode .car-image {
+  filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.5));
+}
+
+.night-mode .enhanced-player-info {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
