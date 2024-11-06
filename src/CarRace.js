@@ -144,6 +144,13 @@ const CarRace = () => {
       setIsLoading(true);
       const response = await fetch('https://codeclashserver.onrender.com/filtered-test-results');
       const data = await response.json();
+      
+      // Add safety check to ensure data is an array
+      if (!Array.isArray(data)) {
+        console.error('Received invalid data format:', data);
+        return;
+      }
+      
       setUsers(data);
 
       const newHighestProgress = { ...highestProgress };
@@ -163,6 +170,7 @@ const CarRace = () => {
       setFinishedCars(prev => [...prev, ...newlyFinished]);
     } catch (error) {
       console.error('Error fetching data:', error);
+      setUsers([]); // Set empty array on error
     } finally {
       setIsLoading(false);
     }
