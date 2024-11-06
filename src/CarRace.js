@@ -129,11 +129,11 @@ const CarRace = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isDayMode, setIsDayMode] = useState(true);
 
-  const filteredUsers = users.filter(user => 
-    projectFilter === '' || user.project_info.name === projectFilter
-  );
+  const filteredUsers = Array.isArray(users) 
+    ? users.filter(user => projectFilter === '' || user.project_info.name === projectFilter)
+    : [];
 
-  const uniqueProjects = [...new Set(users.map(user => user.project_info.name))];
+  const uniqueProjects = [...new Set(Array.isArray(users) ? users.map(user => user.project_info.name) : [])];
 
   const leader = filteredUsers.reduce((prev, current) => {
     return prev?.test_status.passed > current?.test_status.passed ? prev : current;
