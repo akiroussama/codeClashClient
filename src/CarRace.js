@@ -27,28 +27,32 @@ const RaceTitle = () => (
 );
 
 // Enhanced Player Info Component
-const PlayerInfo = ({ username, project, isLeader }) => (
-  <motion.div 
-    className="enhanced-player-info"
-    initial={{ opacity: 0, x: -20 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.3 }}
-  >
-    <div className="player-avatar">
-      {username.charAt(0).toUpperCase()}
-    </div>
-    <div className="player-details">
-      <h3 className="enhanced-player-name">
-        {username}
-        {isLeader && <span className="leader-crown">👑</span>}
-      </h3>
-      {/* <div className="enhanced-project-name">
-        <span className="project-icon">🚀</span>
-        {project}
-      </div> */}
-    </div>
-  </motion.div>
-);
+const PlayerInfo = ({ username, project, isLeader }) => {
+  // Calculate progress percentage
+  const progress = (project?.test_status?.passed / project?.test_status?.total) * 100 || 0;
+  
+  return (
+    <motion.div 
+      className="enhanced-player-info"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="player-avatar">
+        {username.charAt(0).toUpperCase()}
+      </div>
+      <div className="player-details">
+        <h3 className="enhanced-player-name">
+          {username}
+          {isLeader && <span className="leader-crown">👑</span>}
+        </h3>
+        <div className="progress-info">
+          {project?.test_status?.passed}/{project?.test_status?.total} ({progress.toFixed(1)}%)
+        </div>
+      </div>
+    </motion.div>
+  );
+};
 
 // Enhanced Track Component with Premium Styling
 const RaceTrack = ({ children, isStart, isFinish }) => (
@@ -299,7 +303,10 @@ const CarRace = () => {
           <div key={user.id} className="race-track-row">
             <PlayerInfo
               username={user.user}
-              project={user.project_info.name}
+              project={{
+                ...user.project_info,
+                test_status: user.test_status
+              }}
               isLeader={user.id === leader?.id}
             />
             <RaceTrack isStart={idx === 0} isFinish={idx === 0}>
