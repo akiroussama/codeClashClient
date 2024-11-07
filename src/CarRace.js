@@ -15,7 +15,14 @@ const RaceTitle = () => (
       animate={{ scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <span className="title-text">Car Race</span>
+       <motion.span 
+        className="title-flag"
+        animate={{ rotate: [0, 10, -10, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+      🏁
+      </motion.span>
+      <span className="title-text">Clash Of Code</span>
       <motion.span 
         className="title-flag"
         animate={{ rotate: [0, 10, -10, 0] }}
@@ -256,6 +263,7 @@ const CarRace = () => {
             value={projectFilter} 
             onChange={(e) => setProjectFilter(e.target.value)}
             className="project-filter"
+            style={{ width: `${Math.max(...uniqueProjects.map(project => project.length), 'All Projects'.length)}ch` }}
           >
             <option value="">All Projects</option>
             {uniqueProjects.map(project => (

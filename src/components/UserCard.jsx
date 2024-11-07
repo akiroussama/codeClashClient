@@ -2,11 +2,9 @@ import './UserCard.css';
 import { motion } from 'framer-motion';
 
 const UserCard = ({ username, score, total, percentage, style }) => {
-  // Ensure username is a string and not empty
   const initial = username && typeof username === 'string' ? username[0].toUpperCase() : '?';
-  console.log("style", style);
   return (
-    <div className="user-card">
+    <div className="user-card" >
       <div className="avatar" style={style}>
         {initial}
       </div>

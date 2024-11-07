@@ -6,6 +6,7 @@
   --text-color: #ffffff;
   --track-color: #263238;
   --progress-color: #4caf50;
+  --background-gradient: linear-gradient(135deg, #355C7D,#6C5B7B, #C06C84);
 }
 
 /* Add these new title styles */
@@ -14,7 +15,7 @@
   text-align: center;
   margin-bottom: 2rem;
   padding: 1rem;
-  background: linear-gradient(135deg, #ff6f00, var(--secondary-color));
+  background: transparent;
   border-radius: 15px;
   box-shadow: 0 4px 15px var(--shadow-color);
   animation: pulse 3s infinite;
@@ -99,26 +100,26 @@
 }
 
 /* Track texture and markings */
-.track::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: 
-    /* Lane markings */
-    repeating-linear-gradient(
-      90deg,
-      transparent 0%,
-      transparent 48%,
-      rgba(255, 255, 255, 0.12) 49%,
-      rgba(255, 255, 255, 0.12) 51%,
-      transparent 52%,
-      transparent 100%
-    ),
-    /* Asphalt texture */
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
-  animation: trackMove 20s linear infinite;
+.track {
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    #2e2e38 0%,
+    #3a3f58 30%,
+    #3a3f58 70%,
+    #2e2e38 100%
+  );
   border-radius: 40px;
+  position: relative;
+  overflow: visible;
+  transform: perspective(1000px) rotateX(15deg);
+  transform-style: preserve-3d;
+  box-shadow: 
+    0 25px 35px rgba(0, 0, 0, 0.3),
+    0 15px 20px rgba(0, 0, 0, 0.2),
+    inset 0 -10px 20px rgba(0, 0, 0, 0.4),
+    inset 0 10px 20px rgba(255, 255, 255, 0.1);
+  margin: 0 60px;
 }
 
 /* Side barriers */
@@ -625,9 +626,9 @@
 /* CarRace.css */
 .race-container {
   padding: 2rem;
-  background: linear-gradient(to bottom, #1a1a1a, #2d2d2d);
+  background: var(--background-gradient);
   min-height: 100vh;
-  color: white;
+  color: var(--text-color);
 }
 
 .race-container.night-mode {
@@ -951,4 +952,57 @@
   50% {
     transform: rotate(20deg);
   }
+}
+
+.user-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--primary-color);
+}
+
+.username {
+  font-weight: 600;
+  color: var(--text-color);
+  font-family: 'Bebas Neue', cursive;
+}
+
+.crown-icon {
+  color: var(--accent-color);
+  font-size: 16px;
+}
+
+.stats {
+  font-size: 14px;
+  color: #a0a0a0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.percentage {
+  color: var(--progress-color);
+  font-weight: 500;
 }
