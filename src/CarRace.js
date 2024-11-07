@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 import './CarRace.css';
+import UserCard from './components/UserCard';
 
 // Enhanced Title Component
 const RaceTitle = () => (
@@ -25,34 +26,6 @@ const RaceTitle = () => (
     </motion.h1>
   </div>
 );
-
-// Enhanced Player Info Component
-const PlayerInfo = ({ username, project, isLeader }) => {
-  // Calculate progress percentage
-  const progress = (project?.test_status?.passed / project?.test_status?.total) * 100 || 0;
-  
-  return (
-    <motion.div 
-      className="enhanced-player-info"
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="player-avatar">
-        {username.charAt(0).toUpperCase()}
-      </div>
-      <div className="player-details">
-        <h3 className="enhanced-player-name">
-          {username}
-          {isLeader && <span className="leader-crown">👑</span>}
-        </h3>
-        <div className="progress-info">
-          {project?.test_status?.passed}/{project?.test_status?.total} ({progress.toFixed(1)}%)
-        </div>
-      </div>
-    </motion.div>
-  );
-};
 
 // Enhanced Track Component with Premium Styling
 const RaceTrack = ({ children, isStart, isFinish }) => (
@@ -232,7 +205,7 @@ const CarRace = () => {
         <div className="car-container">
           <CarEffects />
           <motion.img 
-            src={getCarImage(user.id, index)}
+            src={`/car${Math.floor(Math.random() * 17) + 1}.png`}
             alt="racing car"
             className="car-image"
             animate={{
@@ -301,13 +274,13 @@ const CarRace = () => {
       <div className="race-tracks">
         {filteredUsers.map((user, idx) => (
           <div key={user.id} className="race-track-row">
-            <PlayerInfo
+            <UserCard
               username={user.user}
-              project={{
-                ...user.project_info,
-                test_status: user.test_status
-              }}
-              isLeader={user.id === leader?.id}
+              score={user.test_status.passed}
+              total={user.test_status.total}
+              percentage={(user.test_status.passed / user.test_status.total * 100).toFixed(1)}
+              isActive={user.id === leader?.id}
+              position={idx + 1}
             />
             <RaceTrack isStart={idx === 0} isFinish={idx === 0}>
               <div 
@@ -345,6 +318,18 @@ const getCarImage = (id, idx) => {
     '/car2.png',
     '/car3.png',
     '/car4.png',
+    '/car5.png',
+    '/car6.png',
+    '/car7.png',
+    '/car8.png',
+    '/car9.png',
+    '/car10.png',
+    '/car11.png',
+    '/car12.png',
+    '/car13.png',
+    '/car14.png',
+    '/car15.png',
+    '/car16.png'
   ];
   return carImages[idx % carImages.length];
 };
