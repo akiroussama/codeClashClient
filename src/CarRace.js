@@ -205,7 +205,7 @@ const CarRace = () => {
         <div className="car-container">
           <CarEffects />
           <motion.img 
-            src={`/car${Math.floor(Math.random() * 18) + 1}.png`}
+            src={`/car${(index % 18) + 1}.png`}
             alt="racing car"
             className="car-image"
             animate={{
@@ -237,6 +237,13 @@ const CarRace = () => {
         </div>
       </motion.div>
     );
+  };
+
+  const getUserColors = (index) => {
+    const colors = ['#FF5722', '#FFC107', '#4CAF50', '#2196F3', '#9C27B0']; // Example colors
+    const userColor =  colors[index % colors.length];
+    console.log(userColor);
+    return userColor;
   };
 
   return (
@@ -272,30 +279,33 @@ const CarRace = () => {
       </div>
 
       <div className="race-tracks">
-        {filteredUsers.map((user, idx) => (
-          <div key={user.id} className="race-track-row">
-            <UserCard
-              username={user.user}
-              score={user.test_status.passed}
-              total={user.test_status.total}
-              percentage={(user.test_status.passed / user.test_status.total * 100).toFixed(1)}
-              isActive={user.id === leader?.id}
-              position={idx + 1}
-            />
-            <RaceTrack isStart={idx === 0} isFinish={idx === 0}>
-              <div 
-                className="track" 
-                ref={el => trackRefs.current[idx] = el}
-              >
-                <CarWithEffects
-                  user={user}
-                  index={idx}
-                  isLeader={user.id === leader?.id}
-                />
-              </div>
-            </RaceTrack>
-          </div>
-        ))}
+      {filteredUsers.map((user, idx) => {
+  console.log("User data:", user);
+  return (
+    <div key={user.id} className="race-track-row">
+      <UserCard
+        className="player-avatar"
+        style={{ backgroundColor: getUserColors(idx) }}
+        username={user.user}
+        score={user.test_status.passed}
+        total={user.test_status.total}
+        percentage={(user.test_status.passed / user.test_status.total * 100).toFixed(1)}
+      />
+      <RaceTrack isStart={idx === 0} isFinish={idx === filteredUsers.length - 1}>
+        <div 
+          className="track" 
+          ref={el => trackRefs.current[idx] = el}
+        >
+          <CarWithEffects
+            user={user}
+            index={idx}
+            isLeader={user.id === leader?.id}
+          />
+        </div>
+      </RaceTrack>
+    </div>
+  );
+})}
       </div>
 
       {finishedCars.length > 0 && (

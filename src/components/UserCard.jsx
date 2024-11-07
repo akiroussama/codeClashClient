@@ -1,14 +1,17 @@
 import './UserCard.css';
 
-const UserCard = ({ username, score, total, percentage }) => {
+const UserCard = ({ username, score, total, percentage, style }) => {
+  // Ensure username is a string and not empty
+  const initial = username && typeof username === 'string' ? username[0].toUpperCase() : '?';
+  console.log("style", style);
   return (
     <div className="user-card">
-      <div className="avatar">
-        {username[0].toUpperCase()}
+      <div className="avatar" style={style}>
+        {initial}
       </div>
       <div className="user-info">
         <div className="username">
-          {username}
+          {username || 'Unknown User'}
           <span className="crown-icon">👑</span>
         </div>
         <div className="stats">
@@ -17,7 +20,7 @@ const UserCard = ({ username, score, total, percentage }) => {
         </div>
       </div>
     </div>
-    )
+  );
 } 
 
 export default UserCard;
