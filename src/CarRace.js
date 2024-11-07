@@ -205,7 +205,7 @@ const CarRace = () => {
         <div className="car-container">
           <CarEffects />
           <motion.img 
-            src={`/car${Math.floor(Math.random() * 5) + 1}.png`}
+            src={`/car${Math.floor(Math.random() * 18) + 1}.png`}
             alt="racing car"
             className="car-image"
             animate={{
