@@ -1,4 +1,5 @@
 import './UserCard.css';
+import { motion } from 'framer-motion';
 
 const UserCard = ({ username, score, total, percentage, style }) => {
   // Ensure username is a string and not empty
@@ -22,5 +23,26 @@ const UserCard = ({ username, score, total, percentage, style }) => {
     </div>
   );
 } 
+
+// Enhanced Title Component
+const RaceTitle = () => (
+  <div className="race-title-wrapper">
+    <motion.h1 
+      className="race-title"
+      initial={{ scale: 0.9 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <span className="title-text">Car Race</span>
+      <motion.span 
+        className="title-flag"
+        animate={{ rotate: [0, 10, -10, 0] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        🏁
+      </motion.span>
+    </motion.h1>
+  </div>
+);
 
 export default UserCard;
